@@ -12,6 +12,7 @@ const Map = () => {
       }}
       center={[51.505, -0.09]}
       zoom={13}
+      zoomControl={false}
     >
       <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png" />
     </MapContainer>

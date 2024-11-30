@@ -30,7 +30,7 @@ function Window({ title, children, className, shield, circle }: props) {
           <EllipsisVertical strokeWidth={0.7} size={18} />
         </div>
       </div>
-      <div className="overflow-y-auto">{children}</div>
+      <div className="overflow-y-auto h-[calc(100%-33px)]">{children}</div>
     </div>
   );
 }
