@@ -1,11 +1,11 @@
 import { TEMPTRANSCRIPT } from "@/utils/constants";
-import Window from "./window";
+import Window from "../window";
 import { cn } from "@/utils";
 
 export default function Transcript() {
   return (
     <Window className="col-span-2 row-span-3" title="Transcript" circle="red">
-      <div className="flex flex-col gap-6 p-2 font-light texts">
+      <div className="flex flex-col gap-6 p-2 font-light text-sm">
         {TEMPTRANSCRIPT.map((message) =>
           message.type === "message" ? (
             <div className={cn("flex justify-between")}>

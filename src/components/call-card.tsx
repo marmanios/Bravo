@@ -1,5 +1,5 @@
 import { cn } from "@/utils";
-import { TCallType, TEmergencyStatus } from "@/utils/types";
+import { TCallType, TEmergencyStatus, callTypeMap } from "@/utils/types";
 import { format } from "date-fns";
 import {
   Ambulance,
@@ -33,24 +33,18 @@ type props = {
   title: string;
 };
 
-function CallCard({ id, time, status, type, title }: props) {
+function CallCard({ id, time, status, type }: props) {
   return (
     <div className="flex items-center px-4 py-2 border-b cursor-pointer hover:bg-[#16253f] transition-all">
       <div className="flex items-center justify-center w-8 h-8 rounded-full">
         {typeMap[type]}
       </div>
       <div className="flex-1">
-        <div className="flex flex-col ml-2">
-          <p className="text-sm font-light">{title}</p>
-          <p className="text-xs text-gray-500">
-            {format(time, "yyyy-MM-dd HH:mm:ss")}
-          </p>
-        </div>
-        <div className="flex justify-between mt-1">
-          <p className="text-xs text-muted ml-2">#{id}</p>
+        <div className="flex items-center ml-2">
+          <p className="text-sm font-light">{callTypeMap[type]}</p>
           <p
             className={cn(
-              "text-xs font-light uppercase tracking-[1px]",
+              "ml-auto text-xs font-light uppercase tracking-[1px]",
               status === "pending" && "text-yellow-500",
               status === "active" && "text-red-500",
               status === "resolved" && "text-green-500",
@@ -58,6 +52,12 @@ function CallCard({ id, time, status, type, title }: props) {
             )}
           >
             {status}
+          </p>
+        </div>
+        <div className="flex justify-between mt-1">
+          <p className="text-xs text-muted ml-2">#{id}</p>
+          <p className="ml-auto text-xs text-gray-500">
+            {format(time, "yyyy-MM-dd HH:mm:ss")}
           </p>
         </div>
       </div>

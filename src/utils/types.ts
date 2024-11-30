@@ -34,20 +34,50 @@ export type TCallType =
   | "PublicDisturbance"
   | "AnimalControl"
   | "Other";
+
+export const callTypeMap = {
+  Fire: "Fire",
+  Medical: "Medical",
+  Police: "Police",
+  Traffic: "Traffic",
+  Rescue: "Rescue",
+  Utility: "Utility",
+  PublicDisturbance: "Public Disturbance",
+  AnimalControl: "Animal Control",
+  Other: "Other",
+};
+
 export type TEmergencyPriority = "low" | "medium" | "high";
 export type TEmergencyStatus = "pending" | "active" | "resolved" | "cancelled";
 export type TResponderStatus =
   | "available"
   | "dispatched"
-  | "on_scene"
+  | "onScene"
   | "returning";
+
+export const responderStatusMap = {
+  available: "Available",
+  dispatched: "Dispatched",
+  onScene: "On Scene",
+  returning: "Returning",
+};
+
 export type TResponderType =
   | "police"
   | "fire"
   | "medical"
-  | "traffic_control"
+  | "trafficControl"
   | "hazmat"
-  | "search_rescue";
+  | "searchRescue";
+
+export const responderTypeMap = {
+  police: "Police",
+  fire: "Fire",
+  medical: "Medical",
+  trafficControl: "Traffic Control",
+  hazmat: "Hazmat",
+  searchRescue: "Search & Rescue",
+};
 
 export type TCallLog = {
   id: number;
@@ -65,6 +95,7 @@ export type TCallLog = {
   longitude: string | null;
   locationDescription: string | null;
   responseType: TResponderType | null;
+  responseStatus: TResponderStatus | null;
   dispatchedAt: string | null;
 
   // transcript: {
