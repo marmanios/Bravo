@@ -1,5 +1,5 @@
 import { cn } from "@/utils";
-import { TCallType } from "@/utils/types";
+import { TCallType, TEmergencyStatus } from "@/utils/types";
 import { format } from "date-fns";
 import {
   Ambulance,
@@ -13,14 +13,6 @@ import {
   Zap,
 } from "lucide-react";
 
-export type callLogProps = {
-  id: number;
-  time: Date;
-  title: string;
-  status: "pending" | "active" | "resolved";
-  type: TCallType;
-};
-
 export const typeMap = {
   Fire: <Flame strokeWidth={0.8} />,
   Medical: <Ambulance strokeWidth={0.8} />,
@@ -33,7 +25,15 @@ export const typeMap = {
   Other: <Box strokeWidth={0.8} />,
 };
 
-function CallCard({ id, time, status, type, title }: callLogProps) {
+type props = {
+  id: number;
+  time: string;
+  status: TEmergencyStatus;
+  type: TCallType;
+  title: string;
+};
+
+function CallCard({ id, time, status, type, title }: props) {
   return (
     <div className="flex items-center px-4 py-2 border-b cursor-pointer hover:bg-[#16253f] transition-all">
       <div className="flex items-center justify-center w-8 h-8 rounded-full">
@@ -53,7 +53,8 @@ function CallCard({ id, time, status, type, title }: callLogProps) {
               "text-xs font-light uppercase tracking-[1px]",
               status === "pending" && "text-yellow-500",
               status === "active" && "text-red-500",
-              status === "resolved" && "text-green-500"
+              status === "resolved" && "text-green-500",
+              status === "cancelled" && "text-gray-500"
             )}
           >
             {status}
