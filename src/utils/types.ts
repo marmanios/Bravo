@@ -25,6 +25,11 @@ export type TTransriptResponse = {
 export type TCallLogDB = Database["public"]["Tables"]["call_logs"]["Row"];
 
 // CLIENT
+export type TTranscriptCue = {
+  start: string,
+  end: string,
+  text: string,
+}
 
 export type TTranscriptInstance = TTranscriptEvent | TTranscriptMessage;
 
