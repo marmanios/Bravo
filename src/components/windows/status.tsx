@@ -17,12 +17,15 @@ import { typeMap } from "../call-card";
 import { format } from "date-fns";
 import { SortButton } from "../sort-button";
 import { useState } from "react";
+import useCallLog from "@/context/use-call-log";
 
 type props = {
   loading: "initialize" | "fetching" | "completed";
 };
 
 export default function Status({ loading }: props) {
+  const { selectedCallLog, setSelectedCallLog } = useCallLog();
+
   const { data: callLogs, isLoading } = useCallLogs();
   const [sort, setSort] = useState("priority");
 
@@ -97,7 +100,13 @@ export default function Status({ loading }: props) {
             ?.map((log) => (
               <TableRow
                 key={log.id}
-                className="cursor-pointer hover:bg-[#16253f] transition-all"
+                onClick={() => {
+                  setSelectedCallLog(log);
+                }}
+                className={cn(
+                  "cursor-pointer hover:bg-[#16253f] transition-all",
+                  selectedCallLog?.id === log.id && "bg-[#1c2e4c]"
+                )}
               >
                 <TableCell className="text-muted">#{log.id}</TableCell>
                 <TableCell>

@@ -3,6 +3,7 @@ import "./globals.css";
 import QueryProvider from "@/components/query-provider";
 
 import { Space_Mono, Source_Code_Pro } from "next/font/google";
+import CallLogProvider from "@/context/call-log-provider";
 
 const spaceMono = Space_Mono({
   subsets: ["latin"],
@@ -28,7 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${sourceCodePro.variable} font-scp antialiased`}>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <CallLogProvider>{children}</CallLogProvider>
+        </QueryProvider>
       </body>
     </html>
   );

@@ -21,16 +21,7 @@ export default function CallLog({ loading }: props) {
     >
       {callLogs &&
         callLogs.map((log) => {
-          return (
-            <CallCard
-              key={log.id}
-              id={log.id}
-              time={log.createdAt}
-              status={log.status ?? "pending"}
-              type={log.type ?? "Other"}
-              title={log.description ?? "Unknown"}
-            />
-          );
+          return <CallCard key={log.id} log={log} />;
         })}
     </Window>
   );
