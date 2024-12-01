@@ -74,6 +74,9 @@ export default function Bravo({ loading }: props) {
     if (metaData?.priority !== undefined && metaData.priority in emergencyPriorityMap && priority === '') {
       setPriority(metaData.priority);
     }
+    if (metaData?.case_type !== undefined && metaData.case_type in callTypeMap && callType === '') {
+      setCallType(metaData.case_type);
+    }
     if (metaData?.people_locations !== undefined && metaData.people_locations !== '' && situation === '') {
       setSituation(metaData.people_locations);
     }

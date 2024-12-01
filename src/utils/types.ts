@@ -134,6 +134,7 @@ export type TMetadata = {
   callback_information: string;
   incident_location: string;
   priority: string;
+  case_type: string;
   incident_nature: string;
   people_locations: string;
 }
