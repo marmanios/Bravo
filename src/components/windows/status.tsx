@@ -24,15 +24,16 @@ type props = {
 };
 
 export default function Status({ loading }: props) {
-  const { selectedCallLog, setSelectedCallLog } = useCallLog();
+  const { selectedCallLog, setSelectedCallLog, expandTranscript } =
+    useCallLog();
 
   const { data: callLogs, isLoading } = useCallLogs();
   const [sort, setSort] = useState("priority");
 
   return (
     <Window
-      className="col-span-4 row-span-2"
-      title="Status"
+      className={cn("col-span-4 row-span-2", expandTranscript && "col-span-2")}
+      title={`Status`}
       loading={loading}
       loadingOffset={1900}
       sort={

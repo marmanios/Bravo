@@ -9,10 +9,18 @@ export default function CallLogProvider({
   children: React.ReactNode;
 }>) {
   const [selectedCallLog, setSelectedCallLog] = useState<TCallLog | null>(null);
+  const [expandTranscript, setExpandTranscript] = useState(false);
 
   return (
     <>
-      <CallLogContext.Provider value={{ selectedCallLog, setSelectedCallLog }}>
+      <CallLogContext.Provider
+        value={{
+          selectedCallLog,
+          setSelectedCallLog,
+          expandTranscript,
+          setExpandTranscript,
+        }}
+      >
         {children}
       </CallLogContext.Provider>
     </>

@@ -1,5 +1,13 @@
+import useCallLog from "@/context/use-call-log";
 import { cn } from "@/utils";
-import { Circle, EllipsisVertical, ShieldCheck } from "lucide-react";
+import {
+  ArrowLeftFromLine,
+  ArrowRightFromLine,
+  Circle,
+  EllipsisVertical,
+  ShieldCheck,
+  X,
+} from "lucide-react";
 import { use, useEffect, useState } from "react";
 
 type props = {
@@ -11,6 +19,8 @@ type props = {
   shield?: boolean;
   sort?: React.ReactNode;
   parentID?: string;
+  controlSelected?: boolean;
+  expandable?: boolean;
 };
 
 function Window({
@@ -22,7 +32,15 @@ function Window({
   loadingOffset,
   loading,
   parentID,
+  controlSelected,
+  expandable,
 }: props) {
+  const {
+    selectedCallLog,
+    setSelectedCallLog,
+    expandTranscript,
+    setExpandTranscript,
+  } = useCallLog();
   const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
@@ -36,9 +54,16 @@ function Window({
   }, [loading]);
 
   return (
-    <div className={cn("border rounded ", className)}>
+    <div className={cn("border rounded transition-all", className)}>
       <div className="relative z-10 bg-card px-2 py-1 border-b flex items-center">
-        <h2 className="font-light uppercase">{title}</h2>
+        <h2 className="font-light uppercase">
+          {title}
+          {controlSelected
+            ? selectedCallLog
+              ? ` - #${selectedCallLog.id}`
+              : ""
+            : ""}
+        </h2>
         <div className="ml-auto flex">
           <Circle
             strokeWidth={0.7}
@@ -51,10 +76,41 @@ function Window({
                 "text-green-500 fill-green-500"
             )}
           />
+
           {shield && (
             <ShieldCheck className="ml-1.5" strokeWidth={0.7} size={18} />
           )}
           {sort}
+          {controlSelected && selectedCallLog && (
+            <X
+              onClick={() => {
+                setSelectedCallLog(null);
+              }}
+              className="ml-1.5 cursor-pointer"
+              strokeWidth={0.7}
+              size={18}
+            />
+          )}
+          {expandable &&
+            (expandTranscript ? (
+              <ArrowRightFromLine
+                strokeWidth={0.7}
+                className="ml-1.5 cursor-pointer"
+                size={18}
+                onClick={() => {
+                  setExpandTranscript(false);
+                }}
+              />
+            ) : (
+              <ArrowLeftFromLine
+                strokeWidth={0.7}
+                className="ml-1.5 cursor-pointer"
+                size={18}
+                onClick={() => {
+                  setExpandTranscript(true);
+                }}
+              />
+            ))}
           <EllipsisVertical strokeWidth={0.7} size={18} />
         </div>
       </div>

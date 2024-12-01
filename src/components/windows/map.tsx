@@ -41,14 +41,17 @@ const MoveToMarker = ({
 };
 
 const Map = ({ loading }: props) => {
-  const { selectedCallLog } = useCallLog();
+  const { selectedCallLog, expandTranscript } = useCallLog();
 
   const { data: callLogs } = useCallLogs();
 
   return (
     <Window
-      className="col-span-3 row-span-4 overflow-hidden relative"
-      title="Map"
+      className={cn(
+        "col-span-3 row-span-4 overflow-hidden relative",
+        expandTranscript && "col-span-1"
+      )}
+      title={`Map`}
       loading={loading}
       loadingOffset={1800}
       shield

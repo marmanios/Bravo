@@ -7,12 +7,14 @@ import { useEffect, useRef, useState } from "react";
 import useTranscript from "@/hooks/getTranscript";
 import { TTranscriptCue } from "@/utils/types";
 import useMetadata from "@/hooks/getMetadata";
+import useCallLog from "@/context/use-call-log";
 
 type props = {
   loading: "initialize" | "fetching" | "completed";
 };
 
 export default function Transcript({ loading }: props) {
+  const { expandTranscript } = useCallLog();
   // const { data: transcript, isLoading } = useTranscript(TEMPTRANSCRIPTLINK);
   const metadataMutation = useMetadata({
     callback: (data) => {
@@ -66,11 +68,12 @@ export default function Transcript({ loading }: props) {
 
   return (
     <Window
-      className="col-span-2 row-span-3"
-      title="Transcript"
+      className={cn("col-span-2 row-span-3", expandTranscript && "col-span-4")}
+      title={`Transcript`}
       loading={loading}
       loadingOffset={200}
       parentID="cues-container"
+      expandable
     >
       <div className="flex flex-col gap-6 p-2 font-light texts">
         {visibleCues.map((cue, index) => (

@@ -32,7 +32,7 @@ type props = {
 };
 
 export default function Bravo({ loading }: props) {
-  const { selectedCallLog } = useCallLog();
+  const { selectedCallLog, expandTranscript } = useCallLog();
   const [editMode, setEditMode] = useState(false);
 
   const [name, setName] = useState("");
@@ -65,13 +65,14 @@ export default function Bravo({ loading }: props) {
       setDispatched(selectedCallLog.dispatchedAt || "");
       setEnded(selectedCallLog.endedAt || "");
     }
-  }, [selectedCallLog]);
+  }, [selectedCallLog, editMode]);
 
   return (
     <Window
-      className="col-span-2 row-span-3"
-      title="Bravo"
+      className={cn("col-span-2 row-span-3", expandTranscript && "col-span-4")}
+      title={`Bravo`}
       shield
+      controlSelected
       loadingOffset={1400}
       loading={loading}
     >
