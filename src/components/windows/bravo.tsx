@@ -87,6 +87,7 @@ export default function Bravo({ loading }: props) {
     if (
       metaData?.latitude !== undefined &&
       typeof metaData.latitude === "string" &&
+      !isNaN(Number(metaData.latitude)) &&
       latitude !== null
     ) {
       console.log("Latitude", metaData.latitude);
@@ -95,6 +96,7 @@ export default function Bravo({ loading }: props) {
     if (
       metaData?.longitude !== undefined &&
       typeof metaData.longitude === "string" &&
+      !isNaN(Number(metaData.longitude)) &&
       longitude !== null
     ) {
       console.log("Longitude", metaData.longitude);
@@ -165,6 +167,7 @@ export default function Bravo({ loading }: props) {
         return;
       }
 
+      setMetaData(null);
       setName(updatedLog.name || "");
       setPhone(updatedLog.phoneNumber || "");
       setAddress(updatedLog.address || "");
@@ -196,7 +199,7 @@ export default function Bravo({ loading }: props) {
       setStatus("");
       setMetaData(null);
     }
-  }, [selectedCallLog, editMode, callLogs]);
+  }, [selectedCallLog, editMode, callLogs, setMetaData]);
 
   return (
     <Window
@@ -513,6 +516,7 @@ export default function Bravo({ loading }: props) {
 
                 putCallLog.mutate(newCallLog);
                 setEditMode(false);
+                setMetaData(null);
                 setCreateMode(false);
                 setInCall(false);
               }}
