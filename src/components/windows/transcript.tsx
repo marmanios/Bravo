@@ -8,7 +8,11 @@ import useTranscript from "@/hooks/getTranscript";
 import { TTranscriptCue } from "@/utils/types";
 import useMetadata from "@/hooks/getMetadata";
 
-export default function Transcript() {
+type props = {
+  loading: "initialize" | "fetching" | "completed";
+};
+
+export default function Transcript({ loading }: props) {
   // const { data: transcript, isLoading } = useTranscript(TEMPTRANSCRIPTLINK);
   const metadataMutation = useMetadata({
     callback: (data) => {
@@ -61,7 +65,13 @@ export default function Transcript() {
   }, [isPlayingTranscript]);
 
   return (
-    <Window className="col-span-2 row-span-3" title="Transcript" circle="red" parentID="cues-container">
+    <Window
+      className="col-span-2 row-span-3"
+      title="Transcript"
+      loading={loading}
+      loadingOffset={200}
+      parentID="cues-container"
+    >
       <div className="flex flex-col gap-6 p-2 font-light texts">
         {visibleCues.map((cue, index) => (
           <div key={`cue_${index}`} className={cn("flex justify-between")}>
@@ -72,7 +82,7 @@ export default function Transcript() {
             <p className="">{cue.start}</p>
           </div>
         ))}
-        <div id={'cues-end'} className="flex">
+        <div id={"cues-end"} className="flex">
           {/* <p className="ml-auto uppercase">[Call Ended]</p>
           <p className="ml-auto text-background">
             {new Date().toLocaleTimeString()}
