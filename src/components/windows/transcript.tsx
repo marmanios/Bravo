@@ -116,7 +116,7 @@ export default function Transcript({ loading }: props) {
   return (
     <Window
       className={cn("col-span-2 row-span-3", expandTranscript && "col-span-4")}
-      title={`Transcript ${metadataMutation.isPending ? "..." : ""}`}
+      title={`Transcript`}
       loading={loading}
       loadingOffset={200}
       parentID="transcript-container"
