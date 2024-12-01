@@ -126,7 +126,7 @@ export default function Status({ loading }: props) {
                 </TableCell>
                 <TableCell>{typeMap[log.type ?? "Other"]}</TableCell>
                 <TableCell>
-                  {format(log.createdAt, "yyyy-mm-dd HH:mm:ss")}
+                  {format(log.createdAt, "yyyy-MM-dd HH:mm:ss")}
                 </TableCell>
                 <TableCell className="text-sm font-light">{log.city}</TableCell>
                 <TableCell className="text-sm font-light">

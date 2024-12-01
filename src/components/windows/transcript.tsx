@@ -6,6 +6,7 @@ import { use, useEffect, useState } from "react";
 import useTranscript from "@/hooks/getTranscript";
 import useMetadata from "@/hooks/getMetadata";
 import useCallLog from "@/context/use-call-log";
+import { format } from "date-fns";
 type props = {
   loading: "initialize" | "fetching" | "completed";
 };
@@ -101,6 +102,17 @@ export default function Transcript({ loading }: props) {
   //   }
   // }, [isPlayingTranscript]);
 
+  const formatMessageTime = (createdAt: string, timestamp: number) => {
+    // Parse createdAt into a Date object
+    const createdDate = new Date(createdAt);
+
+    // Add message.timestamp (in seconds)
+    const messageDate = new Date(createdDate.getTime() + timestamp * 1000);
+
+    // Format the resulting date (e.g., 'yyyy-MM-dd HH:mm:ss')
+    return format(messageDate, "yyyy-MM-dd HH:mm:ss");
+  };
+
   return (
     <Window
       className={cn("col-span-2 row-span-3", expandTranscript && "col-span-4")}
@@ -113,14 +125,21 @@ export default function Transcript({ loading }: props) {
       <div className="flex flex-col gap-6 p-2 font-light texts">
         {status === "success" &&
           transcript?.map((message, index) => (
-            <div
-              key={`transcript_message_${index}`}
-              className={cn("flex flex-col justify-between")}
-            >
-              <span className="font-normal">
-                <b>[{message.timestamp}]:</b>
-              </span>{" "}
-              <p className={"basis-[80%]"}>{message.text}</p>
+            <div key={`transcript_message_${index}`}>
+              <p className={""}>{message.text}</p>
+              <div className="flex">
+                <p className="text-sm text-muted uppercase">Caller</p>
+                <p className="text-sm text-muted ml-auto">
+                  [
+                  {selectedCallLog
+                    ? formatMessageTime(
+                        selectedCallLog?.createdAt,
+                        message.timestamp
+                      )
+                    : message.timestamp}
+                  ]
+                </p>
+              </div>
             </div>
           ))}
         <div id={"cues-end"} className="flex">
