@@ -33,7 +33,7 @@ export default function RootLayout({
         <QueryProvider>
           <CallLogProvider>
             {children}
-            <Toaster />
+            {/* <Toaster /> */}
           </CallLogProvider>
         </QueryProvider>
       </body>
