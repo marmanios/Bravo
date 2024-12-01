@@ -60,6 +60,8 @@ export async function PUT(request: NextRequest) {
       response_type,
       response_status,
       dispatched_at,
+      latitude,
+      longitude,
     } = body;
 
     const dataToInsert = {
@@ -78,10 +80,9 @@ export async function PUT(request: NextRequest) {
       response_type,
       response_status,
       dispatched_at,
+      latitude,
+      longitude,
     };
-
-    console.log("body", body);
-    console.log("dataToInsert", dataToInsert);
 
     // Insert or update the record
     const { data, error } = await supabase

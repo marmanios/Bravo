@@ -52,6 +52,30 @@ const Map = ({ loading }: props) => {
     setCreateMode,
   } = useCallLog();
 
+  const [callTimer, setCallTimer] = useState(0);
+
+  const secondsToHHMMSS = (totalSeconds: number) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    return [hours, minutes, seconds]
+      .map((val) => String(val).padStart(2, "0"))
+      .join(":");
+  };
+
+  useEffect(() => {
+    if (inCall) {
+      const interval = setInterval(() => {
+        setCallTimer((prev) => prev + 1);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    } else {
+      setCallTimer(0);
+    }
+  }, [selectedCallLog]);
+
   const { data: callLogs, refetch } = useCallLogs();
 
   useEffect(() => {
@@ -74,7 +98,7 @@ const Map = ({ loading }: props) => {
       shield
     >
       {callLogs?.filter((log) => !log.type)?.length && (
-        <div className="absolute top-12 left-4 p-4 bg-background border rounded z-20 flex gap-4 items-center">
+        <div className="absolute w-[250px] top-12 left-4 p-4 bg-background border rounded z-20 flex gap-4 items-center">
           <Headphones size={34} />
           <div className="flex flex-col gap-2">
             <p className="font-light">
@@ -85,6 +109,9 @@ const Map = ({ loading }: props) => {
                 <span>.</span>
               </span>
             </p>
+            {inCall && (
+              <p className="text-muted">{secondsToHHMMSS(callTimer)}</p>
+            )}
             <div className="flex gap-2">
               {!inCall && (
                 <>

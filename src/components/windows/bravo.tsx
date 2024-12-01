@@ -64,8 +64,8 @@ export default function Bravo({ loading }: props) {
   const [created, setCreated] = useState("");
   const [dispatched, setDispatched] = useState("");
   const [ended, setEnded] = useState("");
-  const [latitude, setLatitude] = useState<number | null>(null);
-  const [longitude, setLongitude] = useState<number | null>(null);
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   const [status, setStatus] = useState("");
 
   useEffect(() => {
@@ -85,18 +85,18 @@ export default function Bravo({ loading }: props) {
     }
     if (
       metaData?.latitude !== undefined &&
-      typeof metaData.latitude === 'number' &&
+      typeof metaData.latitude === "string" &&
       latitude !== null
     ) {
-      console.log('Latitude', metaData.latitude);
+      console.log("Latitude", metaData.latitude);
       setLatitude(metaData.latitude);
     }
     if (
       metaData?.longitude !== undefined &&
-      typeof metaData.longitude === 'number' &&
+      typeof metaData.longitude === "string" &&
       longitude !== null
     ) {
-      console.log('Longitude', metaData.longitude);
+      console.log("Longitude", metaData.longitude);
       setLongitude(metaData.longitude);
     }
     if (
@@ -141,7 +141,18 @@ export default function Bravo({ loading }: props) {
     ) {
       setSituation(metaData.situation_details);
     }
-  }, [metaData, name, phone, location, callType, priority, situation, address, latitude, longitude]);
+  }, [
+    metaData,
+    name,
+    phone,
+    location,
+    callType,
+    priority,
+    situation,
+    address,
+    latitude,
+    longitude,
+  ]);
 
   useEffect(() => {
     console.log("useffect triggered selectedCallLog", selectedCallLog);
@@ -493,7 +504,11 @@ export default function Bravo({ loading }: props) {
                   response_type: responseType,
                   response_status: responseStatus,
                   status: status,
+                  latitude: latitude,
+                  longitude: longitude,
                 };
+
+                console.log(newCallLog);
 
                 putCallLog.mutate(newCallLog);
                 setEditMode(false);
