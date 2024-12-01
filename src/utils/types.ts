@@ -93,7 +93,6 @@ export type TResponderType =
   | "searchRescue"
   | "noResponse";
 
-
 export const responderTypeMap: Record<TResponderType, string> = {
   noResponse: "No Response",
   police: "Police",
@@ -136,13 +135,13 @@ export type TMetadata = {
   callback_information: string;
   incident_location: string;
   location_details: string;
-  latitude: number;
-  longitude: number;
+  latitude: string;
+  longitude: string;
   priority: string;
   case_type: string;
   incident_nature: string;
   situation_details: string;
-}
+};
 
 export type TMetadataRequestBody = {
   text: string;

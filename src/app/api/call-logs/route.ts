@@ -60,6 +60,8 @@ export async function PUT(request: NextRequest) {
       response_type,
       response_status,
       dispatched_at,
+      latitude,
+      longitude,
     } = body;
 
     const dataToInsert = {
@@ -78,6 +80,8 @@ export async function PUT(request: NextRequest) {
       response_type,
       response_status,
       dispatched_at,
+      latitude,
+      longitude,
     };
 
     // Insert or update the record
