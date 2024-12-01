@@ -11,9 +11,9 @@ type props = {
 };
 
 export default function Transcript({ loading }: props) {
-  const { expandTranscript, setMetaData } = useCallLog();
+  const { selectedCallLog, expandTranscript, setMetaData } = useCallLog();
   // const { data: transcript, isLoading } = useTranscript(TEMPTRANSCRIPTLINK);
-  const { data: transcript, status, refetch } = useTranscript();
+  const { data: transcript, status, refetch } = useTranscript(selectedCallLog?.id);
   const [lastUpdateLength, setLastUpdateLength] = useState<number>(0);
   const metadataMutation = useMetadata({
     callback: (data) => { 

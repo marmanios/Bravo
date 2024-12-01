@@ -30,8 +30,9 @@ import { useQuery } from "@tanstack/react-query";
 // };
 
 // FOR THE DEMO. Fetch line
-export const fetchTranscript = async (): Promise<TTranscriptMessage[] | null> => {
-  const res = await fetch(`/api/transcript`, {
+export const fetchTranscript = async (logID: number | undefined): Promise<TTranscriptMessage[] | null> => {
+  if (logID === undefined) return null;
+  const res = await fetch(`/api/transcript/${logID}`, {
     method: "GET",
   });
 
@@ -39,10 +40,10 @@ export const fetchTranscript = async (): Promise<TTranscriptMessage[] | null> =>
   return json.data?.transcript as TTranscriptMessage[] ?? null;
 };
 
-export default function useTranscript() {
+export default function useTranscript(logID: number | undefined) {
   return useQuery({
-    queryKey: ["transcript"],
-    queryFn: async () => fetchTranscript(),
+    queryKey: ["transcript", logID],
+    queryFn: async () => fetchTranscript(logID),
   })
 }
 
