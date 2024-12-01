@@ -65,8 +65,6 @@ export default function Bravo({ loading }: props) {
         return;
       }
 
-      console.log("UPDATED LOG: ", updatedLog);
-
       setName(updatedLog.name || "");
       setPhone(updatedLog.phoneNumber || "");
       setAddress(updatedLog.address || "");
@@ -81,7 +79,7 @@ export default function Bravo({ loading }: props) {
       setDispatched(updatedLog.dispatchedAt || "");
       setEnded(updatedLog.endedAt || "");
     }
-  }, [selectedCallLog, editMode]);
+  }, [selectedCallLog, editMode, callLogs]);
 
   return (
     <Window
