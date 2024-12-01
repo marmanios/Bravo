@@ -25,29 +25,16 @@ export type TTransriptResponse = {
 export type TCallLogDB = Database["public"]["Tables"]["call_logs"]["Row"];
 
 // CLIENT
+export type TTranscriptMessage = {
+  text: string,
+  timestamp: number,
+}
+
 export type TTranscriptCue = {
   start: number,
   end: number,
   text: string,
 }
-
-export type TTranscriptInstance = TTranscriptEvent | TTranscriptMessage;
-
-export type TTranscriptEvent = TTranscriptBase & {
-  type: "event";
-  speaker: null;
-};
-
-export type TTranscriptMessage = TTranscriptBase & {
-  type: "message";
-  speaker: "caller" | "dispatcher";
-};
-
-export type TTranscriptBase = {
-  messageId: number;
-  time: Date;
-  text: string;
-};
 
 export type TCallType =
   | "Fire"
