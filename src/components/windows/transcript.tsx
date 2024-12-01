@@ -1,68 +1,85 @@
 "use client";
 
-import { TEMPTRANSCRIPTLINK, TEMPTRANSCRIPTCUES } from "@/utils/constants";
 import Window from "../window";
 import { cn } from "@/utils";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import useTranscript from "@/hooks/getTranscript";
-import { TTranscriptCue } from "@/utils/types";
 import useMetadata from "@/hooks/getMetadata";
-
 type props = {
   loading: "initialize" | "fetching" | "completed";
 };
 
 export default function Transcript({ loading }: props) {
   // const { data: transcript, isLoading } = useTranscript(TEMPTRANSCRIPTLINK);
+  const { data: transcript, status, refetch } = useTranscript();
+  const [ lastUpdateLength, setLastUpdateLength ] = useState<number>(0);
   const metadataMutation = useMetadata({
     callback: (data) => {
       console.log(data);
     },
   });
 
-  const [visibleCues, setVisibleCues] = useState<TTranscriptCue[]>([]);
-  const visibleCuesRef = useRef(visibleCues); // Ref to track the real-time state
-  const [isPlayingTranscript, setIsPlayingTranscript] = useState(false);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 500);
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
+
+  useEffect(() => {
+    if (transcript?.length && transcript.length > lastUpdateLength + 5) {
+      const texts: string[] = transcript.slice(lastUpdateLength).map(
+        (cue) => cue.text
+      );
+      metadataMutation.mutate({ text: texts.join("\n") });
+      setLastUpdateLength(transcript.length);
+    }
+  }, [transcript, lastUpdateLength, metadataMutation]);
+
+  // const [visibleCues, setVisibleCues] = useState<TTranscriptCue[]>([]);
+  // const visibleCuesRef = useRef(visibleCues); // Ref to track the real-time state
+  // const [isPlayingTranscript, setIsPlayingTranscript] = useState(false);
 
   // Sync the ref with the current state
-  useEffect(() => {
-    visibleCuesRef.current = visibleCues;
-  }, [visibleCues]);
+  // useEffect(() => {
+  //   visibleCuesRef.current = visibleCues;
+  // }, [visibleCues]);
 
-  useEffect(() => {
-    const playTranscript = async () => {
-      for (let i = 0; i < TEMPTRANSCRIPTCUES.length; i++) {
-        const newLine = TEMPTRANSCRIPTCUES[i];
-        const nextLine = TEMPTRANSCRIPTCUES[i + 1];
-        const timeToWait = (nextLine.start - newLine.start) * 1000;
+  // useEffect(() => {
+  //   const playTranscript = async () => {
+  //     for (let i = 0; i < TEMPTRANSCRIPTCUES.length; i++) {
+  //       const newLine = TEMPTRANSCRIPTCUES[i];
+  //       const nextLine = TEMPTRANSCRIPTCUES[i + 1];
+  //       const timeToWait = (nextLine.start - newLine.start) * 1000;
 
-        // Add the new line only if it hasn't already been added
-        setVisibleCues((prevCues) => {
-          if (prevCues.length === i) {
-            return [...prevCues, newLine];
-          }
-          return prevCues; // No redundant update
-        });
+  //       // Add the new line only if it hasn't already been added
+  //       setVisibleCues((prevCues) => {
+  //         if (prevCues.length === i) {
+  //           return [...prevCues, newLine];
+  //         }
+  //         return prevCues; // No redundant update
+  //       });
 
-        if (i % 20 == 0 && i > 0) {
-          const texts: string[] = TEMPTRANSCRIPTCUES.slice(i - 20, i).map(
-            (cue) => cue.text
-          );
-          // metadataMutation.mutate({ text: texts.join("\n") });
-        }
-        const element = document.getElementById("cues-container");
-        await new Promise((resolve) => setTimeout(resolve, timeToWait));
-        element!.scrollTop = element!.scrollHeight + 200;
-      }
+  //       if (i % 20 == 0 && i > 0) {
+  //         const texts: string[] = TEMPTRANSCRIPTCUES.slice(i - 20, i).map(
+  //           (cue) => cue.text
+  //         );
+  //         // metadataMutation.mutate({ text: texts.join("\n") });
+  //       }
+  //       await new Promise((resolve) => setTimeout(resolve, timeToWait));
+        // const element = document.getElementById("transcript-container");
+        // element!.scrollTop = element!.scrollHeight + 200;
+  //     }
 
-      return;
-    };
+  //     return;
+  //   };
 
-    if (!isPlayingTranscript) {
-      setIsPlayingTranscript(true); // Prevent multiple loops
-      playTranscript();
-    }
-  }, [isPlayingTranscript]);
+  //   if (!isPlayingTranscript) {
+  //     setIsPlayingTranscript(true); // Prevent multiple loops
+  //     playTranscript();
+  //   }
+  // }, [isPlayingTranscript]);
 
   return (
     <Window
@@ -70,18 +87,18 @@ export default function Transcript({ loading }: props) {
       title="Transcript"
       loading={loading}
       loadingOffset={200}
-      parentID="cues-container"
+      parentID="transcript-container"
     >
       <div className="flex flex-col gap-6 p-2 font-light texts">
-        {visibleCues.map((cue, index) => (
-          <div key={`cue_${index}`} className={cn("flex justify-between")}>
-            <p className={"basis-[80%]"}>
-              {/* <span className="font-normal">[{message.speaker}]</span>{" "} */}
-              {cue.text}
-            </p>
-            <p className="">{cue.start}</p>
-          </div>
-        ))}
+        {status === "success" &&
+          transcript?.map((message, index) => (
+            <div key={`transcript_message_${index}`} className={cn("flex flex-col justify-between")}>
+                <span className="font-normal"><b>[{message.timestamp}]:</b></span>{" "}
+              <p className={"basis-[80%]"}>
+                {message.text}
+              </p>
+            </div>
+          ))}
         <div id={"cues-end"} className="flex">
           {/* <p className="ml-auto uppercase">[Call Ended]</p>
           <p className="ml-auto text-background">

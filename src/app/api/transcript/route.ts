@@ -2,23 +2,26 @@ import { createClient } from "@/utils/supabase/server";
 import { TTranscriptMessage } from "@/utils/types";
 import { NextRequest, NextResponse } from "next/server";
 
+const ROW_ID = 19;
+
+
 export async function GET() {
   try {
     const supabase = await createClient();
     const { data, error } = await supabase
-      .from("call_logs")
+      .from("transcript")
       .select("*")
-      .order("created_at", { ascending: false });
+      .eq("id", ROW_ID);
 
     if (error) {
-      console.error("Error fetching call logs:", error);
-      throw new Error("Error fetching call logs");
+      console.error("Error fetching transcript:", error);
+      throw new Error("Error fetching transcript");
     }
 
     return NextResponse.json(
       {
-        data,
-        message: "Successfully retrieved call logs",
+        data: data[0],
+        message: "Successfully retrieved transcript",
       },
       { status: 200 }
     );
@@ -38,7 +41,6 @@ export async function GET() {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const ROW_ID = 19;
     const reqJson = await req.json();
     const reqTranscript: TTranscriptMessage[] = reqJson.transcript;
 

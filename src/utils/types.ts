@@ -20,20 +20,16 @@ export type TTransriptResponse = {
   words: TWord[],
 }
 
+
 // DATABASE
 
 export type TCallLogDB = Database["public"]["Tables"]["call_logs"]["Row"];
+export type TTranscriptDB = Database["public"]["Tables"]["transcript"]["Row"];
 
 // CLIENT
 export type TTranscriptMessage = {
   text: string,
   timestamp: number,
-}
-
-export type TTranscriptCue = {
-  start: number,
-  end: number,
-  text: string,
 }
 
 export type TCallType =

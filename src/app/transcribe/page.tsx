@@ -33,7 +33,7 @@ export default function Dictaphone(): JSX.Element {
       const id = setInterval(() => {
         if (transcript && startTime !== null) {
           // Calculate elapsed time in seconds since polling started
-          const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+          const elapsedTime = parseFloat(((Date.now() - startTime) / 1000).toFixed(2));
 
           // Get the new additions to the transcript (what has changed since the last poll)
           const newTranscriptPart = transcript.replace(previousTranscriptRef.current, "");
