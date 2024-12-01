@@ -2,7 +2,7 @@
 
 import Window from "../window";
 import { cn } from "@/utils";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useTranscript from "@/hooks/getTranscript";
 import useMetadata from "@/hooks/getMetadata";
 import useCallLog from "@/context/use-call-log";

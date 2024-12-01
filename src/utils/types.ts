@@ -135,10 +135,13 @@ export type TMetadata = {
   caller_name: string;
   callback_information: string;
   incident_location: string;
+  location_details: string;
+  latitude: number;
+  longitude: number;
   priority: string;
   case_type: string;
   incident_nature: string;
-  people_locations: string;
+  situation_details: string;
 }
 
 export type TMetadataRequestBody = {

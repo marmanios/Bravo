@@ -27,7 +27,7 @@ import {
 import { TriangleAlert } from "lucide-react";
 import { cn } from "@/utils";
 import { Button } from "../ui/button";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import useCallLog from "@/context/use-call-log";
 import usePutCallLog from "@/hooks/putCallLog";
 import useCallLogs from "@/hooks/getAllCallLogs";
@@ -64,6 +64,8 @@ export default function Bravo({ loading }: props) {
   const [created, setCreated] = useState("");
   const [dispatched, setDispatched] = useState("");
   const [ended, setEnded] = useState("");
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
 
   useEffect(() => {
     if (
@@ -81,11 +83,34 @@ export default function Bravo({ loading }: props) {
       setName(metaData.caller_name);
     }
     if (
+      metaData?.latitude !== undefined &&
+      typeof metaData.latitude === 'number' &&
+      latitude !== null
+    ) {
+      console.log('Latitude', metaData.latitude);
+      setLatitude(metaData.latitude);
+    }
+    if (
+      metaData?.longitude !== undefined &&
+      typeof metaData.longitude === 'number' &&
+      longitude !== null
+    ) {
+      console.log('Longitude', metaData.longitude);
+      setLongitude(metaData.longitude);
+    }
+    if (
       metaData?.incident_location !== undefined &&
       metaData.incident_location !== "" &&
+      address === ""
+    ) {
+      setAddress(metaData.incident_location);
+    }
+    if (
+      metaData?.location_details !== undefined &&
+      metaData.location_details !== "" &&
       location === ""
     ) {
-      setLocation(metaData.incident_location);
+      setAddress(metaData.location_details);
     }
     if (
       metaData?.incident_nature !== undefined &&
@@ -109,13 +134,13 @@ export default function Bravo({ loading }: props) {
       setCallType(metaData.case_type);
     }
     if (
-      metaData?.people_locations !== undefined &&
-      metaData.people_locations !== "" &&
+      metaData?.situation_details !== undefined &&
+      metaData.situation_details !== "" &&
       situation === ""
     ) {
-      setSituation(metaData.people_locations);
+      setSituation(metaData.situation_details);
     }
-  }, [metaData, name, phone, location, callType, priority, situation]);
+  }, [metaData, name, phone, location, callType, priority, situation, address, latitude, longitude]);
 
   useEffect(() => {
     console.log("useffect triggered selectedCallLog", selectedCallLog);
