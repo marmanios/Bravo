@@ -26,8 +26,8 @@ export type TCallLogDB = Database["public"]["Tables"]["call_logs"]["Row"];
 
 // CLIENT
 export type TTranscriptCue = {
-  start: string,
-  end: string,
+  start: number,
+  end: number,
   text: string,
 }
 

@@ -41,7 +41,7 @@ const parseVTT = (vttString: string) => {
     if (line.includes("-->")) {
       // Timestamp line
       const [start, end] = line.split(" --> ");
-      currentCue = { start, end, text: "" };
+      currentCue = { start: parseFloat(start), end: parseFloat(end), text: "" };
     } else if (line.trim() === "") {
       // End of a cue
       if (currentCue) {

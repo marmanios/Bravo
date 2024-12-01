@@ -18,6 +18,7 @@ export default function CallLog() {
         callLogs.map((log) => {
           return (
             <CallCard
+              key={log.id}
               id={log.id}
               time={log.createdAt}
               status={log.status ?? "pending"}
