@@ -21,6 +21,7 @@ function Window({
   sort,
   loadingOffset,
   loading,
+  parentID,
 }: props) {
   const [fetching, setFetching] = useState(false);
 
@@ -57,7 +58,7 @@ function Window({
           <EllipsisVertical strokeWidth={0.7} size={18} />
         </div>
       </div>
-      <div className="overflow-y-auto h-[calc(100%-33px)]">
+      <div id={parentID} className="overflow-y-auto h-[calc(100%-33px)]">
         {loading === "initialize" ? (
           <div></div>
         ) : fetching ? (
