@@ -1,27 +1,35 @@
-'use client';
+"use client";
 
-import 'regenerator-runtime/runtime';
-import React, { useState, useEffect, useRef } from 'react';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import usePostTranscript from '@/hooks/postTranscript';
-import useCallLogs from '@/hooks/getAllCallLogs';
-import usePutCallLog from '@/hooks/putCallLog';
+import "regenerator-runtime/runtime";
+import React, { useState, useEffect, useRef } from "react";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import usePostTranscript from "@/hooks/postTranscript";
+import useCallLogs from "@/hooks/getAllCallLogs";
+import usePutCallLog from "@/hooks/putCallLog";
 
 export default function Dictaphone(): JSX.Element {
-  const [newStringObject, setNewStringObject] = useState<{ text: string; timestamp: number }[]>([]);
+  const [newStringObject, setNewStringObject] = useState<
+    { text: string; timestamp: number }[]
+  >([]);
   // const [ logID, setLogID ] = useState<number | null>(0);
-  const [ firstClick, setFirstClick ] = useState<boolean>(true);
+  const [firstClick, setFirstClick] = useState<boolean>(true);
   const [startTime, setStartTime] = useState<number | null>(null);
-  
+
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null); // Store the interval ID to clear it
-  const previousTranscriptRef = useRef<string>(''); // Use useRef for previous transcript comparison
+  const previousTranscriptRef = useRef<string>(""); // Use useRef for previous transcript comparison
   const lastTimestampRef = useRef<number>(0); // To store the last timestamp for each addition
 
-  const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
   const usePostTranscriptMutation = usePostTranscript();
   // const { status, data } = useCallLogs();
-  const {mutate: putLog, data: createdLog} = usePutCallLog();
-
+  const { mutate: putLog, data: createdLog } = usePutCallLog();
 
   // useEffect(() => {
   //   if (data) {
@@ -45,17 +53,22 @@ export default function Dictaphone(): JSX.Element {
       const id = setInterval(() => {
         if (transcript && startTime !== null) {
           // Calculate elapsed time in seconds since polling started
-          const elapsedTime = parseFloat(((Date.now() - startTime) / 1000).toFixed(2));
+          const elapsedTime = parseFloat(
+            ((Date.now() - startTime) / 1000).toFixed(2)
+          );
 
           // Get the new additions to the transcript (what has changed since the last poll)
-          const newTranscriptPart = transcript.replace(previousTranscriptRef.current, "");
+          const newTranscriptPart = transcript.replace(
+            previousTranscriptRef.current,
+            ""
+          );
 
           if (newTranscriptPart) {
             // Only add to the object if the new part is not empty
             setNewStringObject((prev) => {
               const updatedObject = [
                 ...prev,
-                { text: newTranscriptPart, timestamp: elapsedTime }
+                { text: newTranscriptPart, timestamp: elapsedTime },
               ];
 
               // Update the previous transcript in the ref for the next comparison
@@ -63,9 +76,12 @@ export default function Dictaphone(): JSX.Element {
 
               return updatedObject;
             });
-            
+
             if (createdLog != null) {
-              usePostTranscriptMutation.mutate({logID: createdLog.id, transcript: newStringObject });
+              usePostTranscriptMutation.mutate({
+                logID: createdLog.id,
+                transcript: newStringObject,
+              });
             }
 
             lastTimestampRef.current = elapsedTime; // Update the last timestamp
@@ -87,24 +103,34 @@ export default function Dictaphone(): JSX.Element {
       }
     };
   }, [listening, transcript, startTime]); // Effect depends on listening state, transcript, and startTime
-  
+
   if (!browserSupportsSpeechRecognition) {
-    return <React.Fragment><span>Browser doesn't support speech recognition.</span></React.Fragment>;
+    return (
+      <React.Fragment>
+        <span>Browser doesn't support speech recognition.</span>
+      </React.Fragment>
+    );
+  }
+
+  // Generate a random phone number as a string
+  function generateRandomPhoneNumber(): string {
+    const phoneNumber = Math.floor(Math.random() * 9000000000) + 1000000000;
+    return phoneNumber.toString();
   }
 
   function startRecording() {
     if (firstClick) {
       putLog({
-        name: '',
-        phone_number: '',
-        address: '',
-        city: '',
-        location_description: '',
-        description: '',
-        type: '',
-        priority: '',
-        response_type: '',
-        response_status: ''
+        name: "",
+        phone_number: generateRandomPhoneNumber(),
+        address: "",
+        city: "",
+        location_description: "",
+        description: "",
+        type: "",
+        priority: "",
+        response_type: "",
+        response_status: "",
       });
       setFirstClick(false);
     }
@@ -112,9 +138,9 @@ export default function Dictaphone(): JSX.Element {
   }
 
   return (
-    <div className='flex flex-col gap-4'>
-      <h1>Call ID: {'Pending'}</h1>
-      <p>Microphone: {listening ? 'on' : 'off'}</p>
+    <div className="flex flex-col gap-4">
+      <h1>Call ID: {"Pending"}</h1>
+      <p>Microphone: {listening ? "on" : "off"}</p>
       <button onClick={startRecording}>Start</button>
       <button onClick={SpeechRecognition.stopListening}>Stop</button>
       <button onClick={resetTranscript}>Reset</button>

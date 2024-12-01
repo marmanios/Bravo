@@ -21,7 +21,7 @@ export default function HomePage() {
         setLoading("completed");
         clearTimeout(completedTimeout);
       }, 2000);
-    }, 1500);
+    }, 500);
 
     return () => {
       clearTimeout(fetchingTimeout);
