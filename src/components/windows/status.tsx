@@ -32,7 +32,10 @@ export default function Status({ loading }: props) {
 
   return (
     <Window
-      className={cn("col-span-4 row-span-2", expandTranscript && "col-span-2")}
+      className={cn(
+        "col-span-4 row-span-2 overflow-x-auto",
+        expandTranscript && "col-span-2"
+      )}
       title={`Status`}
       loading={loading}
       loadingOffset={1900}
@@ -49,7 +52,7 @@ export default function Status({ loading }: props) {
         />
       }
     >
-      <Table>
+      <Table className="min-w-[1172px]">
         <TableHeader>
           <TableRow className="uppercase">
             <TableHead>ID</TableHead>

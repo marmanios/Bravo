@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
-import { NextResponse } from "next/server";
+import { TCallLogInsertDB } from "@/utils/types";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -30,6 +31,82 @@ export async function GET() {
         data: null,
         message: "An unexpected error occurred",
       },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const supabase = await createClient();
+    const body = (await request.json()) as TCallLogInsertDB;
+
+    console.log("bid", body);
+
+    // Extract fields from the body
+    const {
+      id,
+      priority,
+      status,
+      type,
+      description,
+      created_at,
+      ended_at,
+      name,
+      phone_number,
+      address,
+      city,
+      location_description,
+      response_type,
+      response_status,
+      dispatched_at,
+    } = body;
+
+    const dataToInsert = {
+      id: id || undefined,
+      priority,
+      status,
+      type,
+      description,
+      created_at,
+      ended_at,
+      name,
+      phone_number,
+      address,
+      city,
+      location_description,
+      response_type,
+      response_status,
+      dispatched_at,
+    };
+
+    // Insert or update the record
+    const { data, error } = await supabase
+      .from("call_logs")
+      .upsert(dataToInsert, { onConflict: "id" }); // Use "id" for conflict resolution
+
+    if (error) {
+      console.error("Error upserting call log:", error);
+      return NextResponse.json(
+        { message: "Failed to create or update the call log", error },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        data,
+        message: id
+          ? "Call log updated successfully"
+          : "New call log created successfully",
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error in PUT /call_logs:", error);
+
+    return NextResponse.json(
+      { message: "An unexpected error occurred", error },
       { status: 500 }
     );
   }

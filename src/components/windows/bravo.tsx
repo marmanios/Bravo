@@ -14,7 +14,9 @@ import {
 } from "../ui/select";
 import { typeMap } from "../call-card";
 import {
+  TCallLogInsertDB,
   TCallType,
+  TEmergencyPriority,
   TResponderStatus,
   TResponderType,
   callTypeMap,
@@ -24,16 +26,22 @@ import {
 import { TriangleAlert } from "lucide-react";
 import { cn } from "@/utils";
 import { Button } from "../ui/button";
+import { format, set } from "date-fns";
 import useCallLog from "@/context/use-call-log";
-import { format } from "date-fns";
+import usePutCallLog from "@/hooks/putCallLog";
+import useCallLogs from "@/hooks/getAllCallLogs";
 
 type props = {
   loading: "initialize" | "fetching" | "completed";
 };
 
 export default function Bravo({ loading }: props) {
-  const { selectedCallLog, expandTranscript } = useCallLog();
+  const putCallLog = usePutCallLog();
+  const { data: callLogs } = useCallLogs();
+  const { selectedCallLog, setSelectedCallLog, expandTranscript } =
+    useCallLog();
   const [editMode, setEditMode] = useState(false);
+  const [createMode, setCreateMode] = useState(false);
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -51,19 +59,27 @@ export default function Bravo({ loading }: props) {
 
   useEffect(() => {
     if (selectedCallLog) {
-      setName(selectedCallLog.name || "");
-      setPhone(selectedCallLog.phoneNumber || "");
-      setAddress(selectedCallLog.address || "");
-      setCity(selectedCallLog.city || "");
-      setLocation(selectedCallLog.locationDescription || "");
-      setSituation(selectedCallLog.description || "");
-      setCallType(selectedCallLog.type || "");
-      setPriority(selectedCallLog.priority || "");
-      setResponseType(selectedCallLog.responseType || "");
-      setResponseStatus(selectedCallLog.responseStatus || "");
-      setCreated(selectedCallLog.createdAt || "");
-      setDispatched(selectedCallLog.dispatchedAt || "");
-      setEnded(selectedCallLog.endedAt || "");
+      const updatedLog = callLogs?.find((log) => log.id === selectedCallLog.id);
+
+      if (!updatedLog) {
+        return;
+      }
+
+      console.log("UPDATED LOG: ", updatedLog);
+
+      setName(updatedLog.name || "");
+      setPhone(updatedLog.phoneNumber || "");
+      setAddress(updatedLog.address || "");
+      setCity(updatedLog.city || "");
+      setLocation(updatedLog.locationDescription || "");
+      setSituation(updatedLog.description || "");
+      setCallType(updatedLog.type || "");
+      setPriority(updatedLog.priority || "");
+      setResponseType(updatedLog.responseType || "");
+      setResponseStatus(updatedLog.responseStatus || "");
+      setCreated(updatedLog.createdAt || "");
+      setDispatched(updatedLog.dispatchedAt || "");
+      setEnded(updatedLog.endedAt || "");
     }
   }, [selectedCallLog, editMode]);
 
@@ -76,7 +92,7 @@ export default function Bravo({ loading }: props) {
       loadingOffset={1400}
       loading={loading}
     >
-      {editMode ? (
+      {editMode || createMode ? (
         <div className="p-4 font-light">
           <h3>Call Information</h3>
           <div className="pt-2 grid grid-cols-2 gap-4">
@@ -320,14 +336,67 @@ export default function Bravo({ loading }: props) {
               </Select>
             </div>
 
-            <Button
-              onClick={() => setEditMode(false)}
-              className="col-span-1 mt-6"
-              variant={"secondary"}
-            >
-              Cancel
-            </Button>
-            <Button className="col-span-1 mt-6">Confirm</Button>
+            {editMode && (
+              <>
+                <Button
+                  onClick={() => {
+                    setEditMode(false);
+                  }}
+                  className="col-span-1 mt-6"
+                  variant={"secondary"}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    const newCallLog: TCallLogInsertDB = {
+                      id: selectedCallLog?.id,
+                      name,
+                      phone_number: phone,
+                      address,
+                      city,
+                      location_description: location,
+                      description: situation,
+                      type: callType || "Other",
+                      priority: priority,
+                      response_type: responseType,
+                      response_status: responseStatus,
+                    };
+
+                    putCallLog.mutate(newCallLog);
+                    setEditMode(false);
+                    setCreateMode(false);
+                  }}
+                  className="col-span-1 mt-6"
+                >
+                  Save Edit
+                </Button>
+              </>
+            )}
+            {createMode && (
+              <Button
+                onClick={() => {
+                  const newCallLog: TCallLogInsertDB = {
+                    name,
+                    phone_number: phone,
+                    address,
+                    city,
+                    location_description: location,
+                    description: situation,
+                    type: callType || "Other",
+                    priority: priority,
+                    response_type: responseType,
+                    response_status: responseStatus,
+                  };
+
+                  putCallLog.mutate(newCallLog);
+                  setCreateMode(false);
+                }}
+                className="col-span-2 mt-6"
+              >
+                Create Log
+              </Button>
+            )}
           </div>
         </div>
       ) : selectedCallLog ? (
@@ -441,7 +510,7 @@ export default function Bravo({ loading }: props) {
               <p className="py-2 px-4 bg-gray-800 rounded">
                 {responseType
                   ? responderTypeMap[responseType as TResponderType]
-                  : "No response selected."}
+                  : "No response."}
               </p>
             </div>
             <div className="col-span-1">
@@ -449,7 +518,7 @@ export default function Bravo({ loading }: props) {
               <p className="py-2 px-4 bg-gray-800 rounded">
                 {responseStatus
                   ? responderStatusMap[responseStatus as TResponderStatus]
-                  : "No response status selected."}
+                  : "No response status."}
               </p>
             </div>
             <Button

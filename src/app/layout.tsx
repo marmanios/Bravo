@@ -4,6 +4,7 @@ import QueryProvider from "@/components/query-provider";
 
 import { Space_Mono, Source_Code_Pro } from "next/font/google";
 import CallLogProvider from "@/context/call-log-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const spaceMono = Space_Mono({
   subsets: ["latin"],
@@ -30,7 +31,10 @@ export default function RootLayout({
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${sourceCodePro.variable} font-scp antialiased`}>
         <QueryProvider>
-          <CallLogProvider>{children}</CallLogProvider>
+          <CallLogProvider>
+            {children}
+            <Toaster />
+          </CallLogProvider>
         </QueryProvider>
       </body>
     </html>

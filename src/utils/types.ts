@@ -2,35 +2,42 @@ import { Database } from "../../database.types";
 
 // API
 export type TMetadataResponse = {
-  message: string,
-  data: TMetadata | null,
-  error: string | null
-}
+  message: string;
+  data: TMetadata | null;
+  error: string | null;
+};
 
 export type TWord = {
-  end: number,
-  start: number,
-  word: string,
-}
+  end: number;
+  start: number;
+  word: string;
+};
 
 export type TTransriptResponse = {
-  text: string,
-  vtt: string,
-  word_count: number,
-  words: TWord[],
-}
-
+  text: string;
+  vtt: string;
+  word_count: number;
+  words: TWord[];
+};
 
 // DATABASE
 
 export type TCallLogDB = Database["public"]["Tables"]["call_logs"]["Row"];
+export type TCallLogInsertDB =
+  Database["public"]["Tables"]["call_logs"]["Insert"];
 export type TTranscriptDB = Database["public"]["Tables"]["transcript"]["Row"];
 
 // CLIENT
 export type TTranscriptMessage = {
-  text: string,
-  timestamp: number,
-}
+  text: string;
+  timestamp: number;
+};
+
+export type TTranscriptCue = {
+  start: number;
+  end: number;
+  text: string;
+};
 
 export type TCallType =
   | "Fire"
@@ -117,16 +124,16 @@ export type TCallLog = {
 };
 
 export type TMetadata = {
-  caller_name: string,
-  callback_information: string,
-  incident_location: string,
-  incident_nature: string,
-  people_locations: string,
-}
+  caller_name: string;
+  callback_information: string;
+  incident_location: string;
+  incident_nature: string;
+  people_locations: string;
+};
 
 export type TMetadataRequestBody = {
-  text: string,
-}
+  text: string;
+};
 
 export type TApiResponse<T> = {
   data: T | null;

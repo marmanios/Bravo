@@ -14,7 +14,7 @@ export default function Transcript({ loading }: props) {
   const { expandTranscript } = useCallLog();
   // const { data: transcript, isLoading } = useTranscript(TEMPTRANSCRIPTLINK);
   const { data: transcript, status, refetch } = useTranscript();
-  const [ lastUpdateLength, setLastUpdateLength ] = useState<number>(0);
+  const [lastUpdateLength, setLastUpdateLength] = useState<number>(0);
   const metadataMutation = useMetadata({
     callback: (data) => {
       console.log(data);
@@ -31,9 +31,9 @@ export default function Transcript({ loading }: props) {
 
   useEffect(() => {
     if (transcript?.length && transcript.length > lastUpdateLength + 5) {
-      const texts: string[] = transcript.slice(lastUpdateLength).map(
-        (cue) => cue.text
-      );
+      const texts: string[] = transcript
+        .slice(lastUpdateLength)
+        .map((cue) => cue.text);
       metadataMutation.mutate({ text: texts.join("\n") });
       setLastUpdateLength(transcript.length);
     }
@@ -70,8 +70,8 @@ export default function Transcript({ loading }: props) {
   //         // metadataMutation.mutate({ text: texts.join("\n") });
   //       }
   //       await new Promise((resolve) => setTimeout(resolve, timeToWait));
-        // const element = document.getElementById("transcript-container");
-        // element!.scrollTop = element!.scrollHeight + 200;
+  // const element = document.getElementById("transcript-container");
+  // element!.scrollTop = element!.scrollHeight + 200;
   //     }
 
   //     return;
@@ -94,11 +94,14 @@ export default function Transcript({ loading }: props) {
       <div className="flex flex-col gap-6 p-2 font-light texts">
         {status === "success" &&
           transcript?.map((message, index) => (
-            <div key={`transcript_message_${index}`} className={cn("flex flex-col justify-between")}>
-                <span className="font-normal"><b>[{message.timestamp}]:</b></span>{" "}
-              <p className={"basis-[80%]"}>
-                {message.text}
-              </p>
+            <div
+              key={`transcript_message_${index}`}
+              className={cn("flex flex-col justify-between")}
+            >
+              <span className="font-normal">
+                <b>[{message.timestamp}]:</b>
+              </span>{" "}
+              <p className={"basis-[80%]"}>{message.text}</p>
             </div>
           ))}
         <div id={"cues-end"} className="flex">
