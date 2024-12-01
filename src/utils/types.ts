@@ -48,6 +48,7 @@ export type TCallType =
   | "Utility"
   | "PublicDisturbance"
   | "AnimalControl"
+  | "Violence"
   | "Other";
 
 export const callTypeMap: Record<TCallType, string> = {
@@ -58,6 +59,7 @@ export const callTypeMap: Record<TCallType, string> = {
   Rescue: "Rescue",
   Utility: "Utility",
   PublicDisturbance: "Public Disturbance",
+  Violence: "Violence",
   AnimalControl: "Animal Control",
   Other: "Other",
 };

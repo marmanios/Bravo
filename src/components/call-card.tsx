@@ -9,6 +9,7 @@ import {
 import { format } from "date-fns";
 import {
   Ambulance,
+  Angry,
   Box,
   Ear,
   Flame,
@@ -18,14 +19,16 @@ import {
   TrafficCone,
   Zap,
 } from "lucide-react";
+import React from "react";
 
-export const typeMap = {
+export const typeMap: Record<TCallType, React.ReactElement> = {
   Fire: <Flame strokeWidth={0.8} />,
   Medical: <Ambulance strokeWidth={0.8} />,
   Police: <Siren strokeWidth={0.8} />,
   Traffic: <TrafficCone strokeWidth={0.8} />,
   Rescue: <LifeBuoy strokeWidth={0.8} />,
   Utility: <Zap strokeWidth={0.8} />,
+  Violence: <Angry strokeWidth={0.8} />,
   PublicDisturbance: <Ear strokeWidth={0.8} />,
   AnimalControl: <PawPrint strokeWidth={0.8} />,
   Other: <Box strokeWidth={0.8} />,
