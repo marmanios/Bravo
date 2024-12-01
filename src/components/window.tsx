@@ -43,6 +43,7 @@ function Window({
     setInCall,
     setCreateMode,
     setEditMode,
+    setMetaData,
   } = useCallLog();
   const [fetching, setFetching] = useState(false);
 
@@ -91,6 +92,7 @@ function Window({
                 setInCall(false);
                 setCreateMode(false);
                 setEditMode(false);
+                setMetaData(null);
               }}
               className="ml-1.5 cursor-pointer"
               strokeWidth={0.7}

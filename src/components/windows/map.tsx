@@ -84,7 +84,7 @@ const Map = ({ loading }: props) => {
               {!inCall && (
                 <>
                   <Button
-                    className="bg-green-700"
+                    className="bg-green-700 w-full"
                     size="sm"
                     onClick={() => {
                       console.log(callLogs.filter((log) => !log.type)[0]);
@@ -97,21 +97,7 @@ const Map = ({ loading }: props) => {
                   >
                     Accept
                   </Button>
-                  <Button size="sm" variant="destructive">
-                    Decline
-                  </Button>
                 </>
-              )}
-              {inCall && (
-                <Button
-                  onClick={() => {
-                    setInCall(false);
-                  }}
-                  size="sm"
-                  variant="destructive"
-                >
-                  End Call
-                </Button>
               )}
             </div>
           </div>

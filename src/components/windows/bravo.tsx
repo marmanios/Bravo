@@ -48,6 +48,7 @@ export default function Bravo({ loading }: props) {
     createMode,
     setInCall,
     setCreateMode,
+    setMetaData,
   } = useCallLog();
 
   const [name, setName] = useState("");
@@ -117,9 +118,11 @@ export default function Bravo({ loading }: props) {
   }, [metaData, name, phone, location, callType, priority, situation]);
 
   useEffect(() => {
+    console.log("useffect triggered selectedCallLog", selectedCallLog);
     if (selectedCallLog) {
       const updatedLog = callLogs?.find((log) => log.id === selectedCallLog.id);
 
+      console.log("updatedLog", updatedLog);
       if (!updatedLog) {
         return;
       }
@@ -151,6 +154,7 @@ export default function Bravo({ loading }: props) {
       setCreated("");
       setDispatched("");
       setEnded("");
+      setMetaData(null);
     }
   }, [selectedCallLog, editMode, callLogs]);
 
