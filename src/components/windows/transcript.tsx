@@ -5,6 +5,7 @@ import { cn } from "@/utils";
 import { useEffect, useState } from "react";
 import useTranscript from "@/hooks/getTranscript";
 import useMetadata from "@/hooks/getMetadata";
+import useCallLog from "@/context/use-call-log";
 type props = {
   loading: "initialize" | "fetching" | "completed";
 };
