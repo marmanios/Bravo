@@ -139,7 +139,7 @@ export type TMetadata = {
   longitude: string;
   priority: string;
   case_type: string;
-  incident_nature: string;
+  dispatch: string;
   situation_details: string;
 };
 
