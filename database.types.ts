@@ -69,6 +69,35 @@ export type Database = {
         }
         Relationships: []
       }
+      transcript: {
+        Row: {
+          created_at: string
+          id: number
+          log_id: number | null
+          transcript: Json[] | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          log_id?: number | null
+          transcript?: Json[] | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          log_id?: number | null
+          transcript?: Json[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transcript_log_id_fkey"
+            columns: ["log_id"]
+            isOneToOne: false
+            referencedRelation: "call_logs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
