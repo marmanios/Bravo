@@ -4,7 +4,11 @@ import CallCard from "../call-card";
 import Window from "../window";
 import useCallLogs from "@/hooks/getAllCallLogs";
 
-export default function CallLog() {
+type props = {
+  loading: "initialize" | "fetching" | "completed";
+};
+
+export default function CallLog({ loading }: props) {
   const { data: callLogs, isLoading } = useCallLogs();
 
   return (
@@ -12,7 +16,8 @@ export default function CallLog() {
       className="col-span-1 row-span-4"
       title="Call Log"
       shield
-      circle="green"
+      loadingOffset={600}
+      loading={loading}
     >
       {callLogs &&
         callLogs.map((log) => {

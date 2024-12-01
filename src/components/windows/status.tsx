@@ -4,7 +4,6 @@ import useCallLogs from "@/hooks/getAllCallLogs";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -19,23 +18,20 @@ import { format } from "date-fns";
 import { SortButton } from "../sort-button";
 import { useState } from "react";
 
-export default function Status() {
+type props = {
+  loading: "initialize" | "fetching" | "completed";
+};
+
+export default function Status({ loading }: props) {
   const { data: callLogs, isLoading } = useCallLogs();
   const [sort, setSort] = useState("priority");
-
-  if (isLoading) {
-    return (
-      <Window className="col-span-4 row-span-2" title="Status" circle="red">
-        <p>Loading...</p>
-      </Window>
-    );
-  }
 
   return (
     <Window
       className="col-span-4 row-span-2"
       title="Status"
-      circle="red"
+      loading={loading}
+      loadingOffset={1900}
       sort={
         <SortButton
           options={[
@@ -53,7 +49,7 @@ export default function Status() {
         <TableHeader>
           <TableRow className="uppercase">
             <TableHead>ID</TableHead>
-            <TableHead>Priority</TableHead>
+            <TableHead>Prio</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Time</TableHead>
             <TableHead>City</TableHead>

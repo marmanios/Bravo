@@ -93,9 +93,11 @@ export type TResponderType =
   | "medical"
   | "trafficControl"
   | "hazmat"
-  | "searchRescue";
+  | "searchRescue"
+  | "noResponse";
 
 export const responderTypeMap = {
+  noResponse: "No Response",
   police: "Police",
   fire: "Fire",
   medical: "Medical",

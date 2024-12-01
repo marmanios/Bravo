@@ -12,15 +12,20 @@ import { callTypeMap } from "@/utils/types";
 import { cn } from "@/utils";
 import { format } from "date-fns";
 
-const Map = () => {
+type props = {
+  loading: "initialize" | "fetching" | "completed";
+};
+
+const Map = ({ loading }: props) => {
   const { data: callLogs } = useCallLogs();
 
   return (
     <Window
       className="col-span-3 row-span-4 overflow-hidden relative"
       title="Map"
+      loading={loading}
+      loadingOffset={1800}
       shield
-      circle="green"
     >
       <div className="grid place-content-center absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-0">
         <MapContainer
@@ -50,7 +55,7 @@ const Map = () => {
                         </div>
                         <p
                           className={cn(
-                            "text-xs font-light uppercase tracking-[1px] pr-2",
+                            "text-xs font-light uppercase tracking-[1px]",
                             log.status === "pending" && "text-yellow-500",
                             log.status === "active" && "text-red-500",
                             log.status === "resolved" && "text-green-500",
