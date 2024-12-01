@@ -144,17 +144,9 @@ export default function Bravo({ loading }: props) {
     ) {
       setSituation(metaData.situation_details);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     metaData,
-    name,
-    phone,
-    location,
-    callType,
-    priority,
-    situation,
-    address,
-    latitude,
-    longitude,
   ]);
 
   useEffect(() => {
