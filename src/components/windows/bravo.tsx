@@ -27,7 +27,7 @@ import {
 import { TriangleAlert } from "lucide-react";
 import { cn } from "@/utils";
 import { Button } from "../ui/button";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import useCallLog from "@/context/use-call-log";
 import usePutCallLog from "@/hooks/putCallLog";
 import useCallLogs from "@/hooks/getAllCallLogs";
@@ -456,7 +456,61 @@ export default function Bravo({ loading }: props) {
             </div>
             <div className="col-span-2">
               <Label>Case Status</Label>
-              <Select
+              <div className="flex gap-2 mt-2">
+                <Button
+                  className={cn(
+                    "p-4 h-32 basis-40 tracking-[2px] uppercase",
+                    "border-red-500 text-red-500",
+                    status !== "active" && "opacity-50"
+                  )}
+                  variant="outline"
+                  onClick={() => {
+                    setStatus("active");
+                  }}
+                >
+                  Active
+                </Button>
+                <Button
+                  className={cn(
+                    "p-4 h-32 basis-40 tracking-[2px] uppercase",
+                    "border-yellow-500 text-yellow-500",
+                    status !== "pending" && "opacity-50"
+                  )}
+                  variant="outline"
+                  onClick={() => {
+                    setStatus("pending");
+                  }}
+                >
+                  Pending
+                </Button>
+                <Button
+                  className={cn(
+                    "p-4 h-32 basis-40 tracking-[2px] uppercase",
+                    "border-green-500 text-green-500",
+                    status !== "resolved" && "opacity-50"
+                  )}
+                  variant="outline"
+                  onClick={() => {
+                    setStatus("resolved");
+                  }}
+                >
+                  Resolved
+                </Button>
+                <Button
+                  className={cn(
+                    "p-4 h-32 basis-40 tracking-[2px] uppercase",
+                    "border-gray-500 text-gray-500",
+                    status !== "cancelled" && "opacity-50"
+                  )}
+                  variant="outline"
+                  onClick={() => {
+                    setStatus("cancelled");
+                  }}
+                >
+                  Cancelled
+                </Button>
+              </div>
+              {/* <Select
                 value={status}
                 onValueChange={setStatus}
                 defaultValue={status}
@@ -478,7 +532,7 @@ export default function Bravo({ loading }: props) {
                     <p className="flex items-center gap-2">Cancelled</p>
                   </SelectItem>
                 </SelectContent>
-              </Select>
+              </Select> */}
             </div>
 
             {editMode && (
@@ -522,7 +576,7 @@ export default function Bravo({ loading }: props) {
               }}
               className={cn("col-span-2 mt-6", editMode && "col-span-1")}
             >
-              {editMode ? "Save Edit" : "Create Log"}
+              {editMode ? "Save Changes" : "Create Log"}
             </Button>
           </div>
         </div>
@@ -651,7 +705,15 @@ export default function Bravo({ loading }: props) {
 
             <div className="col-span-2">
               <Label>Case Status</Label>
-              <p className="py-2 px-4 bg-gray-800 rounded">
+              <p
+                className={cn(
+                  "py-2 px-4 border text-center uppercase tracking-[2px] rounded mt-2",
+                  status === "pending" && "border-yellow-500 text-yellow-500",
+                  status === "active" && "border-red-500 text-red-500",
+                  status === "resolved" && "border-green-500 text-green-500",
+                  status === "cancelled" && "border-gray-500 text-gray-500"
+                )}
+              >
                 {status || "No status"}
               </p>
             </div>
