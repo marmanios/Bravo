@@ -21,6 +21,7 @@ import {
 } from "@/utils/types";
 import { TriangleAlert } from "lucide-react";
 import { cn } from "@/utils";
+import { Button } from "../ui/button";
 
 type props = {
   loading: "initialize" | "fetching" | "completed";
@@ -249,7 +250,6 @@ export default function Bravo({ loading }: props) {
               </SelectContent>
             </Select>
           </div>
-
           <div className="col-span-1">
             <Label>Response Status</Label>
             <Select
@@ -275,6 +275,8 @@ export default function Bravo({ loading }: props) {
               </SelectContent>
             </Select>
           </div>
+
+          <Button className="col-span-2 mt-6">Create Log</Button>
         </div>
       </div>
     </Window>

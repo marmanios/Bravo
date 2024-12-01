@@ -12,21 +12,21 @@ import { cn } from "@/utils";
 export default function HomePage() {
   const [loading, setLoading] = useState<
     "initialize" | "fetching" | "completed"
-  >("initialize");
+  >("completed");
 
-  useEffect(() => {
-    const fetchingTimeout = setTimeout(() => {
-      setLoading("fetching");
-      const completedTimeout = setTimeout(() => {
-        setLoading("completed");
-        clearTimeout(completedTimeout);
-      }, 2000);
-    }, 1500);
+  // useEffect(() => {
+  //   const fetchingTimeout = setTimeout(() => {
+  //     setLoading("fetching");
+  //     const completedTimeout = setTimeout(() => {
+  //       setLoading("completed");
+  //       clearTimeout(completedTimeout);
+  //     }, 2000);
+  //   }, 1500);
 
-    return () => {
-      clearTimeout(fetchingTimeout);
-    };
-  }, []);
+  //   return () => {
+  //     clearTimeout(fetchingTimeout);
+  //   };
+  // }, []);
 
   return (
     <div className="h-screen max-h-screen flex flex-col overflow-hidden">
