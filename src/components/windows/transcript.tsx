@@ -13,13 +13,22 @@ type props = {
 export default function Transcript({ loading }: props) {
   const { selectedCallLog, expandTranscript, setMetaData } = useCallLog();
   // const { data: transcript, isLoading } = useTranscript(TEMPTRANSCRIPTLINK);
-  const { data: transcript, status, refetch } = useTranscript(selectedCallLog?.id);
+  const {
+    data: transcript,
+    status,
+    refetch,
+  } = useTranscript(selectedCallLog?.id);
   const [lastUpdateLength, setLastUpdateLength] = useState<number>(0);
   const metadataMutation = useMetadata({
-    callback: (data) => { 
+    callback: (data) => {
+      console.log("cooked!: ", data);
       setMetaData(data);
     },
   });
+
+  useEffect(() => {
+    setLastUpdateLength(0);
+  }, [selectedCallLog]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -30,7 +39,7 @@ export default function Transcript({ loading }: props) {
   }, []);
 
   useEffect(() => {
-    if (transcript?.length && transcript.length > lastUpdateLength + 5) {
+    if (transcript?.length && transcript.length > lastUpdateLength + 3) {
       const texts: string[] = transcript
         .slice(lastUpdateLength)
         .map((cue) => cue.text);
@@ -86,7 +95,7 @@ export default function Transcript({ loading }: props) {
   return (
     <Window
       className={cn("col-span-2 row-span-3", expandTranscript && "col-span-4")}
-      title={`Transcript`}
+      title={`Transcript ${metadataMutation.isPending ? "..." : ""}`}
       loading={loading}
       loadingOffset={200}
       parentID="transcript-container"

@@ -40,6 +40,9 @@ function Window({
     setSelectedCallLog,
     expandTranscript,
     setExpandTranscript,
+    setInCall,
+    setCreateMode,
+    setEditMode,
   } = useCallLog();
   const [fetching, setFetching] = useState(false);
 
@@ -85,6 +88,9 @@ function Window({
             <X
               onClick={() => {
                 setSelectedCallLog(null);
+                setInCall(false);
+                setCreateMode(false);
+                setEditMode(false);
               }}
               className="ml-1.5 cursor-pointer"
               strokeWidth={0.7}

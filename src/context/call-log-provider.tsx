@@ -11,6 +11,9 @@ export default function CallLogProvider({
   const [selectedCallLog, setSelectedCallLog] = useState<TCallLog | null>(null);
   const [expandTranscript, setExpandTranscript] = useState(false);
   const [metaData, setMetaData] = useState<TMetadata | null>(null);
+  const [inCall, setInCall] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [createMode, setCreateMode] = useState(false);
 
   return (
     <>
@@ -22,6 +25,12 @@ export default function CallLogProvider({
           setExpandTranscript,
           metaData,
           setMetaData,
+          inCall,
+          setInCall,
+          editMode,
+          setEditMode,
+          createMode,
+          setCreateMode,
         }}
       >
         {children}

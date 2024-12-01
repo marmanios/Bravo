@@ -52,7 +52,7 @@ export default function Status({ loading }: props) {
         />
       }
     >
-      <Table className="min-w-[1172px]">
+      <Table className="min-w-[1170px]">
         <TableHeader>
           <TableRow className="uppercase">
             <TableHead>ID</TableHead>
@@ -71,6 +71,7 @@ export default function Status({ loading }: props) {
             ?.filter((log) => {
               return log.status === "active" || log.status === "pending";
             })
+            .filter((log) => log.type)
             .sort((a, b) => {
               if (sort === "priority") {
                 const priorityOrder = { low: 0, medium: 1, high: 2 };
@@ -134,12 +135,12 @@ export default function Status({ loading }: props) {
                 <TableCell>
                   {log.responseType
                     ? responderTypeMap[log.responseType]
-                    : "No Response."}
+                    : "No Response"}
                 </TableCell>
                 <TableCell>
                   {log.responseStatus
                     ? responderStatusMap[log.responseStatus]
-                    : "No Response."}
+                    : "No Response"}
                 </TableCell>
                 <TableCell
                   className={cn(

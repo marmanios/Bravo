@@ -10,6 +10,12 @@ type TCallLogContext = {
   setExpandTranscript: Dispatch<SetStateAction<boolean>>;
   metaData: TMetadata | null;
   setMetaData: Dispatch<SetStateAction<TMetadata | null>>;
+  inCall: boolean;
+  setInCall: Dispatch<SetStateAction<boolean>>;
+  editMode: boolean;
+  setEditMode: Dispatch<SetStateAction<boolean>>;
+  createMode: boolean;
+  setCreateMode: Dispatch<SetStateAction<boolean>>;
 };
 
 const CallLogContext = createContext<TCallLogContext | undefined>(undefined);

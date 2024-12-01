@@ -21,9 +21,11 @@ export default function CallLog({ loading }: props) {
       loading={loading}
     >
       {callLogs &&
-        callLogs.map((log) => {
-          return <CallCard key={log.id} log={log} />;
-        })}
+        callLogs
+          .filter((log) => log.type)
+          .map((log) => {
+            return <CallCard key={log.id} log={log} />;
+          })}
     </Window>
   );
 }

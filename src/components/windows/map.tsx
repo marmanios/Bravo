@@ -12,7 +12,9 @@ import { callTypeMap } from "@/utils/types";
 import { cn } from "@/utils";
 import { format } from "date-fns";
 import useCallLog from "@/context/use-call-log";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Headphones } from "lucide-react";
+import { Button } from "../ui/button";
 
 type props = {
   loading: "initialize" | "fetching" | "completed";
@@ -41,9 +43,24 @@ const MoveToMarker = ({
 };
 
 const Map = ({ loading }: props) => {
-  const { selectedCallLog, expandTranscript } = useCallLog();
+  const {
+    selectedCallLog,
+    setSelectedCallLog,
+    expandTranscript,
+    inCall,
+    setInCall,
+    setCreateMode,
+  } = useCallLog();
 
-  const { data: callLogs } = useCallLogs();
+  const { data: callLogs, refetch } = useCallLogs();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [refetch]);
 
   return (
     <Window
@@ -56,6 +73,50 @@ const Map = ({ loading }: props) => {
       loadingOffset={1800}
       shield
     >
+      {callLogs?.filter((log) => !log.type)?.length && (
+        <div className="absolute top-12 left-4 p-4 bg-background border rounded z-20 flex gap-4 items-center">
+          <Headphones size={34} />
+          <div className="flex flex-col gap-2">
+            <p className="font-light">
+              {inCall ? "In Call" : "Incoming Call..."}
+            </p>
+            <div className="flex gap-2">
+              {!inCall && (
+                <>
+                  <Button
+                    className="bg-green-700"
+                    size="sm"
+                    onClick={() => {
+                      console.log(callLogs.filter((log) => !log.type)[0]);
+                      setSelectedCallLog(
+                        callLogs.filter((log) => !log.type)[0]
+                      );
+                      setInCall(true);
+                      setCreateMode(true);
+                    }}
+                  >
+                    Accept
+                  </Button>
+                  <Button size="sm" variant="destructive">
+                    Decline
+                  </Button>
+                </>
+              )}
+              {inCall && (
+                <Button
+                  onClick={() => {
+                    setInCall(false);
+                  }}
+                  size="sm"
+                  variant="destructive"
+                >
+                  End Call
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
       <div className="grid place-content-center absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-0">
         <MapContainer
           style={{

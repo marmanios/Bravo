@@ -39,10 +39,16 @@ type props = {
 export default function Bravo({ loading }: props) {
   const putCallLog = usePutCallLog();
   const { data: callLogs } = useCallLogs();
-  const { selectedCallLog, setSelectedCallLog, expandTranscript, metaData } =
-    useCallLog();
-  const [editMode, setEditMode] = useState(false);
-  const [createMode, setCreateMode] = useState(false);
+  const {
+    selectedCallLog,
+    expandTranscript,
+    metaData,
+    editMode,
+    setEditMode,
+    createMode,
+    setInCall,
+    setCreateMode,
+  } = useCallLog();
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -59,25 +65,53 @@ export default function Bravo({ loading }: props) {
   const [ended, setEnded] = useState("");
 
   useEffect(() => {
-    if (metaData?.callback_information !== undefined && metaData.callback_information !== '' && phone === '') {
+    if (
+      metaData?.callback_information !== undefined &&
+      metaData.callback_information !== "" &&
+      phone === ""
+    ) {
       setPhone(metaData.callback_information);
     }
-    if (metaData?.caller_name !== undefined && metaData.caller_name !== '' && name === '') {
+    if (
+      metaData?.caller_name !== undefined &&
+      metaData.caller_name !== "" &&
+      name === ""
+    ) {
       setName(metaData.caller_name);
     }
-    if (metaData?.incident_location !== undefined && metaData.incident_location !== '' && location === '') {
+    if (
+      metaData?.incident_location !== undefined &&
+      metaData.incident_location !== "" &&
+      location === ""
+    ) {
       setLocation(metaData.incident_location);
     }
-    if (metaData?.incident_nature !== undefined && metaData.incident_nature in callTypeMap && callType === '') {
+    if (
+      metaData?.incident_nature !== undefined &&
+      metaData.incident_nature in callTypeMap &&
+      callType === ""
+    ) {
       setCallType(metaData.incident_nature);
     }
-    if (metaData?.priority !== undefined && metaData.priority in emergencyPriorityMap && priority === '') {
+    if (
+      metaData?.priority !== undefined &&
+      metaData.priority in emergencyPriorityMap &&
+      priority === ""
+    ) {
       setPriority(metaData.priority);
     }
-    if (metaData?.case_type !== undefined && metaData.case_type in callTypeMap && callType === '') {
+    if (
+      metaData?.case_type !== undefined &&
+      metaData.case_type in callTypeMap &&
+      callType === ""
+    ) {
       setCallType(metaData.case_type);
     }
-    if (metaData?.people_locations !== undefined && metaData.people_locations !== '' && situation === '') {
+    if (
+      metaData?.people_locations !== undefined &&
+      metaData.people_locations !== "" &&
+      situation === ""
+    ) {
       setSituation(metaData.people_locations);
     }
   }, [metaData, name, phone, location, callType, priority, situation]);
@@ -103,6 +137,20 @@ export default function Bravo({ loading }: props) {
       setCreated(updatedLog.createdAt || "");
       setDispatched(updatedLog.dispatchedAt || "");
       setEnded(updatedLog.endedAt || "");
+    } else {
+      setName("");
+      setPhone("");
+      setAddress("");
+      setCity("");
+      setLocation("");
+      setSituation("");
+      setCallType("");
+      setPriority("");
+      setResponseType("");
+      setResponseStatus("");
+      setCreated("");
+      setDispatched("");
+      setEnded("");
     }
   }, [selectedCallLog, editMode, callLogs]);
 
@@ -360,66 +408,42 @@ export default function Bravo({ loading }: props) {
             </div>
 
             {editMode && (
-              <>
-                <Button
-                  onClick={() => {
-                    setEditMode(false);
-                  }}
-                  className="col-span-1 mt-6"
-                  variant={"secondary"}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={() => {
-                    const newCallLog: TCallLogInsertDB = {
-                      id: selectedCallLog?.id,
-                      name,
-                      phone_number: phone,
-                      address,
-                      city,
-                      location_description: location,
-                      description: situation,
-                      type: callType || "Other",
-                      priority: priority,
-                      response_type: responseType,
-                      response_status: responseStatus,
-                    };
-
-                    putCallLog.mutate(newCallLog);
-                    setEditMode(false);
-                    setCreateMode(false);
-                  }}
-                  className="col-span-1 mt-6"
-                >
-                  Save Edit
-                </Button>
-              </>
-            )}
-            {createMode && (
               <Button
                 onClick={() => {
-                  const newCallLog: TCallLogInsertDB = {
-                    name,
-                    phone_number: phone,
-                    address,
-                    city,
-                    location_description: location,
-                    description: situation,
-                    type: callType || "Other",
-                    priority: priority,
-                    response_type: responseType,
-                    response_status: responseStatus,
-                  };
-
-                  putCallLog.mutate(newCallLog);
-                  setCreateMode(false);
+                  setEditMode(false);
                 }}
-                className="col-span-2 mt-6"
+                className="col-span-1 mt-6"
+                variant={"secondary"}
               >
-                Create Log
+                Cancel
               </Button>
             )}
+
+            <Button
+              onClick={() => {
+                const newCallLog: TCallLogInsertDB = {
+                  id: selectedCallLog?.id,
+                  name,
+                  phone_number: phone,
+                  address,
+                  city,
+                  location_description: location,
+                  description: situation,
+                  type: callType || "Other",
+                  priority: priority,
+                  response_type: responseType,
+                  response_status: responseStatus,
+                };
+
+                putCallLog.mutate(newCallLog);
+                setEditMode(false);
+                setCreateMode(false);
+                setInCall(false);
+              }}
+              className={cn("col-span-2 mt-6", editMode && "col-span-1")}
+            >
+              {editMode ? "Save Edit" : "Create Log"}
+            </Button>
           </div>
         </div>
       ) : selectedCallLog ? (
@@ -533,7 +557,7 @@ export default function Bravo({ loading }: props) {
               <p className="py-2 px-4 bg-gray-800 rounded">
                 {responseType
                   ? responderTypeMap[responseType as TResponderType]
-                  : "No response."}
+                  : "No Response"}
               </p>
             </div>
             <div className="col-span-1">
@@ -541,7 +565,7 @@ export default function Bravo({ loading }: props) {
               <p className="py-2 px-4 bg-gray-800 rounded">
                 {responseStatus
                   ? responderStatusMap[responseStatus as TResponderStatus]
-                  : "No response status."}
+                  : "No Response"}
               </p>
             </div>
             <Button
