@@ -50,16 +50,16 @@ export const callTypeMap = {
 export type TEmergencyPriority = "low" | "medium" | "high";
 export type TEmergencyStatus = "pending" | "active" | "resolved" | "cancelled";
 export type TResponderStatus =
-  | "available"
-  | "dispatched"
-  | "onScene"
-  | "returning";
+  | "Available"
+  | "Dispatched"
+  | "OnScene"
+  | "Returning";
 
 export const responderStatusMap = {
-  available: "Available",
-  dispatched: "Dispatched",
-  onScene: "On Scene",
-  returning: "Returning",
+  Available: "Available",
+  Dispatched: "Dispatched",
+  OnScene: "On Scene",
+  Returning: "Returning",
 };
 
 export type TResponderType =
@@ -81,22 +81,22 @@ export const responderTypeMap = {
 
 export type TCallLog = {
   id: number;
-  priority: TEmergencyPriority | null;
-  status: TEmergencyStatus | null;
-  type: TCallType | null;
-  description: string | null;
-  createdAt: string;
-  endedAt: string | null;
-  name: string | null;
-  phoneNumber: string | null;
-  address: string | null;
-  city: string | null;
-  latitude: string | null;
-  longitude: string | null;
-  locationDescription: string | null;
-  responseType: TResponderType | null;
-  responseStatus: TResponderStatus | null;
-  dispatchedAt: string | null;
+  priority: TEmergencyPriority | null; // meta data
+  status: TEmergencyStatus | null; // action
+  type: TCallType | null; // meta data
+  description: string | null; // input
+  createdAt: string; // auto
+  endedAt: string | null; // auto
+  name: string | null; // input
+  phoneNumber: string | null; // input (fake numbers)
+  address: string | null; // input
+  city: string | null; // input
+  latitude: string | null; // metadata
+  longitude: string | null; // metadata
+  locationDescription: string | null; // input
+  responseType: TResponderType | null; // action
+  responseStatus: TResponderStatus | null; // action
+  dispatchedAt: string | null; // auto
 
   // transcript: {
   //   turnId: string;
