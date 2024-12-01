@@ -80,9 +80,6 @@ export async function PUT(request: NextRequest) {
       dispatched_at,
     };
 
-    console.log("body", body);
-    console.log("dataToInsert", dataToInsert);
-
     // Insert or update the record
     const { data, error } = await supabase
       .from("call_logs")

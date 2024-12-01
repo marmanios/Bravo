@@ -1,6 +1,6 @@
 [X] add status
 [X] add a way to show meta data is thinking
-[ ] update transcript UI with real time
+[X] update transcript UI with real time
 [ ] update call UI with real time
 [ ] scroll transcript down
 [ ] improve metadata
