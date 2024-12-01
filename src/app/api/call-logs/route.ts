@@ -84,6 +84,9 @@ export async function PUT(request: NextRequest) {
       longitude,
     };
 
+    console.log("Body", body);
+    console.log("dataToInsert", dataToInsert);
+
     // Insert or update the record
     const { data, error } = await supabase
       .from("call_logs")

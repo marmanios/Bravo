@@ -62,9 +62,7 @@ export default function Transcript({ loading }: props) {
 
   useEffect(() => {
     if (transcript?.length && transcript.length > lastUpdateLength + 3) {
-      const texts: string[] = transcript
-        .slice(lastUpdateLength)
-        .map((cue) => cue.text);
+      const texts: string[] = transcript.map((cue) => cue.text);
       metadataMutation.mutate({ text: texts.join("\n") });
       setLastUpdateLength(transcript.length);
     }

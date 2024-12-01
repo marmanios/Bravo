@@ -24,7 +24,7 @@ import {
   responderStatusMap,
   responderTypeMap,
 } from "@/utils/types";
-import { TriangleAlert } from "lucide-react";
+import { Lock, LockOpen, TriangleAlert } from "lucide-react";
 import { cn } from "@/utils";
 import { Button } from "../ui/button";
 import { format, set } from "date-fns";
@@ -71,26 +71,32 @@ export default function Bravo({ loading }: props) {
   );
   const [status, setStatus] = useState("");
 
+  const [locks, setLocks] = useState({
+    name: false,
+    address: false,
+    situation: false,
+    callType: false,
+    priority: false,
+  });
+
   useEffect(() => {
     if (
       metaData?.callback_information !== undefined &&
-      metaData.callback_information !== "" &&
-      phone === ""
+      metaData.callback_information !== ""
     ) {
       setPhone(metaData.callback_information);
     }
     if (
       metaData?.caller_name !== undefined &&
       metaData.caller_name !== "" &&
-      name === ""
+      (locks.name === false || name === "")
     ) {
       setName(metaData.caller_name);
     }
     if (
       metaData?.latitude !== undefined &&
       typeof metaData.latitude === "string" &&
-      !isNaN(Number(metaData.latitude)) &&
-      latitude !== null
+      !isNaN(Number(metaData.latitude))
     ) {
       console.log("Latitude", metaData.latitude);
       setLatitude(metaData.latitude);
@@ -98,58 +104,52 @@ export default function Bravo({ loading }: props) {
     if (
       metaData?.longitude !== undefined &&
       typeof metaData.longitude === "string" &&
-      !isNaN(Number(metaData.longitude)) &&
-      longitude !== null
+      !isNaN(Number(metaData.longitude))
     ) {
       console.log("Longitude", metaData.longitude);
       setLongitude(metaData.longitude);
     }
     if (
       metaData?.incident_location !== undefined &&
-      metaData.incident_location !== "" &&
-      address === ""
+      metaData.incident_location !== ""
     ) {
       setAddress(metaData.incident_location);
     }
     if (
       metaData?.location_details !== undefined &&
-      metaData.location_details !== "" &&
-      location === ""
+      metaData.location_details !== ""
     ) {
       setAddress(metaData.location_details);
     }
     if (
       metaData?.dispatch !== undefined &&
-      typeof metaData.dispatch == "object" &&
-      callType === ""
+      typeof metaData.dispatch == "object"
     ) {
       setResponderOptions(metaData.dispatch);
     }
     if (
       metaData?.priority !== undefined &&
       metaData.priority in emergencyPriorityMap &&
-      priority === ""
+      (locks.priority === false || priority === "")
     ) {
       setPriority(metaData.priority);
     }
     if (
       metaData?.case_type !== undefined &&
       metaData.case_type in callTypeMap &&
-      callType === ""
+      (locks.callType === false || callType === "")
     ) {
       setCallType(metaData.case_type);
     }
     if (
       metaData?.situation_details !== undefined &&
       metaData.situation_details !== "" &&
-      situation === ""
+      (locks.situation === false || situation === "")
     ) {
       setSituation(metaData.situation_details);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    metaData,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [metaData]);
 
   useEffect(() => {
     console.log("useffect triggered selectedCallLog", selectedCallLog);
@@ -195,6 +195,34 @@ export default function Bravo({ loading }: props) {
     }
   }, [selectedCallLog, editMode, callLogs, setMetaData]);
 
+  type LockSwitchProps = {
+    lockKey: "priority" | "name" | "address" | "situation" | "callType";
+  };
+
+  const LockSwitch: React.FC<LockSwitchProps> = ({ lockKey }) => (
+    <>
+      {locks[lockKey] ? (
+        <Lock
+          onClick={() => {
+            setLocks({ ...locks, [lockKey]: false });
+          }}
+          className="absolute bottom-[50%] right-2 translate-y-1/2 cursor-pointer hover:stroke-2"
+          strokeWidth={0.7}
+          size={18}
+        />
+      ) : (
+        <LockOpen
+          onClick={() => {
+            setLocks({ ...locks, [lockKey]: true });
+          }}
+          className="absolute bottom-[50%] right-2 translate-y-1/2 cursor-pointer hover:stroke-2"
+          strokeWidth={0.7}
+          size={18}
+        />
+      )}
+    </>
+  );
+
   return (
     <Window
       className={cn("col-span-2 row-span-3", expandTranscript && "col-span-4")}
@@ -209,16 +237,20 @@ export default function Bravo({ loading }: props) {
         <div className="p-4 font-light">
           <h3>Call Information</h3>
           <div className="pt-2 grid grid-cols-2 gap-4">
-            <div className="col-span-1">
+            <div className="col-span-1 relative">
               <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                autoComplete={"off"}
-                type="text"
-                placeholder="John Doe..."
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
+              <div className="relative">
+                <Input
+                  id="name"
+                  autoComplete={"off"}
+                  type="text"
+                  placeholder="John Doe..."
+                  className="pr-8"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <LockSwitch lockKey={"name"} />
+              </div>
             </div>
             <div className="col-span-1">
               <Label htmlFor="name">Phone Number</Label>
@@ -231,18 +263,22 @@ export default function Bravo({ loading }: props) {
                 onChange={(e) => setPhone(e.target.value)}
               />
             </div>
-            <div className="col-span-1">
+            <div className="col-span-2">
               <Label htmlFor="name">Address</Label>
-              <Input
-                id="address"
-                autoComplete={"off"}
-                type="text"
-                placeholder="1234 Elm St..."
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
+              <div className="relative">
+                <Input
+                  id="address"
+                  autoComplete={"off"}
+                  type="text"
+                  placeholder="1234 Elm St..."
+                  className="pr-8"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+                <LockSwitch lockKey={"address"} />
+              </div>
             </div>
-            <div className="col-span-1">
+            {/* <div className="col-span-1">
               <Label htmlFor="name">City</Label>
               <Input
                 id="city"
@@ -252,8 +288,8 @@ export default function Bravo({ loading }: props) {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
-            </div>
-            <div className="col-span-2">
+            </div> */}
+            {/* <div className="col-span-2">
               <Label htmlFor="name">Location Description</Label>
               <Textarea
                 id="location-description"
@@ -263,81 +299,90 @@ export default function Bravo({ loading }: props) {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
-            </div>
+            </div> */}
             <div className="col-span-2 mb-6">
               <Label htmlFor="name">Situation Details</Label>
-              <Textarea
-                id="situation-details"
-                className="h-32"
-                autoComplete={"off"}
-                placeholder="Person running away from the scene..."
-                value={situation}
-                onChange={(e) => setSituation(e.target.value)}
-              />
+              <div className="relative">
+                <Textarea
+                  id="situation-details"
+                  className="h-32 pr-8"
+                  autoComplete={"off"}
+                  placeholder="Person running away from the scene..."
+                  value={situation}
+                  onChange={(e) => setSituation(e.target.value)}
+                />
+                <LockSwitch lockKey={"situation"} />
+              </div>
             </div>
 
             <hr className="col-span-2 mb-6 mx-4" />
 
             <div className="col-span-1">
               <Label>Case Type</Label>
-              <Select
-                value={callType}
-                onValueChange={setCallType}
-                defaultValue={callType}
-              >
-                <SelectTrigger className="py-6">
-                  <SelectValue placeholder="Select a case type..." />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.keys(typeMap).map((type) => (
-                    <SelectItem value={type} key={type}>
-                      <p className="flex items-center gap-2">
-                        {typeMap[type as TCallType]}{" "}
-                        {callTypeMap[type as TCallType]}
-                      </p>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="relative">
+                <Select
+                  value={callType}
+                  onValueChange={setCallType}
+                  defaultValue={callType}
+                >
+                  <SelectTrigger className="py-6 pr-8">
+                    <SelectValue placeholder="Select a case type..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.keys(typeMap).map((type) => (
+                      <SelectItem value={type} key={type}>
+                        <p className="flex items-center gap-2">
+                          {typeMap[type as TCallType]}{" "}
+                          {callTypeMap[type as TCallType]}
+                        </p>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <LockSwitch lockKey={"callType"} />
+              </div>
             </div>
 
             <div className="col-span-1">
               <Label>Priority</Label>
-              <Select
-                value={priority}
-                onValueChange={setPriority}
-                defaultValue={priority}
-              >
-                <SelectTrigger className="py-6">
-                  <SelectValue placeholder="Select a priority..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="low">
-                    <p className="flex items-center gap-2">
-                      <TriangleAlert
-                        className={cn("w-6 h-6", "text-green-500")}
-                      />
-                      Low
-                    </p>
-                  </SelectItem>
-                  <SelectItem value="medium">
-                    <p className="flex items-center gap-2">
-                      <TriangleAlert
-                        className={cn("w-6 h-6", "text-yellow-500")}
-                      />
-                      Medium
-                    </p>
-                  </SelectItem>
-                  <SelectItem value="high">
-                    <p className="flex items-center gap-2">
-                      <TriangleAlert
-                        className={cn("w-6 h-6", "text-red-500")}
-                      />
-                      High
-                    </p>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="relative">
+                <Select
+                  value={priority}
+                  onValueChange={setPriority}
+                  defaultValue={priority}
+                >
+                  <SelectTrigger className="py-6 pr-8">
+                    <SelectValue placeholder="Select a priority..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="low">
+                      <p className="flex items-center gap-2">
+                        <TriangleAlert
+                          className={cn("w-6 h-6", "text-green-500")}
+                        />
+                        Low
+                      </p>
+                    </SelectItem>
+                    <SelectItem value="medium">
+                      <p className="flex items-center gap-2">
+                        <TriangleAlert
+                          className={cn("w-6 h-6", "text-yellow-500")}
+                        />
+                        Medium
+                      </p>
+                    </SelectItem>
+                    <SelectItem value="high">
+                      <p className="flex items-center gap-2">
+                        <TriangleAlert
+                          className={cn("w-6 h-6", "text-red-500")}
+                        />
+                        High
+                      </p>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <LockSwitch lockKey={"priority"} />
+              </div>
             </div>
 
             <div className="col-span-2 grid grid-cols-3 gap-4 mb-6">
@@ -399,7 +444,23 @@ export default function Bravo({ loading }: props) {
               </div>
             </div>
 
-            <hr className="col-span-2 mb-6 mx-4" />
+            <hr className="col-span-2 mb-4 mx-4" />
+
+            {metaData?.dispatch && (
+              <div className="col-span-2 mb-4">
+                <Label>Bravo Quick Actions</Label>
+                <Button
+                  className="text-red-500 border-red-500 block mt-2 h-20 w-full"
+                  variant="outline"
+                  onClick={() => {
+                    setResponseType(metaData.dispatch);
+                    setResponseStatus("Dispatched");
+                  }}
+                >
+                  Dispatch {metaData.dispatch}
+                </Button>
+              </div>
+            )}
 
             <div className="col-span-1">
               <Label>Response Type</Label>
@@ -586,13 +647,13 @@ export default function Bravo({ loading }: props) {
               <Label>Phone Number</Label>
               <p className="py-2 px-4 bg-gray-800 rounded">{phone || "NULL"}</p>
             </div>
-            <div className="col-span-1">
+            <div className="col-span-2">
               <Label>Address</Label>
               <p className="py-2 px-4 bg-gray-800 rounded">
                 {address || "NULL"}
               </p>
             </div>
-            <div className="col-span-1">
+            {/* <div className="col-span-1">
               <Label>City</Label>
               <p className="py-2 px-4 bg-gray-800 rounded">{city || "NULL"}</p>
             </div>
@@ -601,7 +662,7 @@ export default function Bravo({ loading }: props) {
               <p className="py-2 px-4 bg-gray-800 rounded">
                 {location || "NULL"}
               </p>
-            </div>
+            </div> */}
             <div className="col-span-2 mb-6">
               <Label>Situation Details</Label>
               <p className="py-2 px-4 bg-gray-800 rounded">
