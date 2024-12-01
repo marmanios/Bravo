@@ -50,15 +50,15 @@ export async function PATCH(req: NextRequest) {
       const { data, error } = await supabase.from('transcript').update({transcript: reqTranscript}).eq('id', ROW_ID);;
     }
 
-    if (error) {
-      console.error("Error fetching call logs:", error);
-      throw new Error("Error fetching call logs");
+    if (fetchedError) {
+      console.error("Error updating transcript:", fetchedError);
+      throw new Error("Error updating transcript");
     }
 
     return NextResponse.json(
       {
-        data,
-        message: "Successfully retrieved call logs",
+        data: null,
+        message: "Successfully updated transcript",
       },
       { status: 200 }
     );

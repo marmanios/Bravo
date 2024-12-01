@@ -3,6 +3,7 @@
 import 'regenerator-runtime/runtime';
 import React, { useState, useEffect, useRef } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import usePostTranscript from '@/hooks/postTranscript';
 
 export default function Dictaphone(): JSX.Element {
   const [newStringObject, setNewStringObject] = useState<{ text: string; timestamp: number }[]>([]);
@@ -11,6 +12,7 @@ export default function Dictaphone(): JSX.Element {
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null); // Store the interval ID to clear it
   const previousTranscriptRef = useRef<string>(''); // Use useRef for previous transcript comparison
   const lastTimestampRef = useRef<number>(0); // To store the last timestamp for each addition
+  const usePostTranscriptMutation = usePostTranscript();
 
   if (!browserSupportsSpeechRecognition) {
     return <React.Fragment><span>Browser doesn't support speech recognition.</span></React.Fragment>;
@@ -49,6 +51,9 @@ export default function Dictaphone(): JSX.Element {
 
               return updatedObject;
             });
+            
+            usePostTranscriptMutation.mutate({ transcript: newStringObject });
+
             lastTimestampRef.current = elapsedTime; // Update the last timestamp
           }
         }
@@ -75,11 +80,7 @@ export default function Dictaphone(): JSX.Element {
       <button onClick={() => SpeechRecognition.startListening({ continuous: true })}>Start</button>
       <button onClick={SpeechRecognition.stopListening}>Stop</button>
       <button onClick={resetTranscript}>Reset</button>
-
       <p>Transcript: {transcript}</p>
-
-      {/* Display the accumulated JSON object with new string additions */}
-      <pre>{JSON.stringify(newStringObject, null, 2)}</pre>
     </div>
   );
 }
