@@ -165,6 +165,7 @@ export default function Bravo({ loading }: props) {
       shield
       controlSelected
       loadingOffset={1400}
+      ai
       loading={loading}
     >
       {editMode || createMode ? (

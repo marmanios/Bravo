@@ -111,3 +111,28 @@ body {
     margin: 0;
   }
 }
+
+.ellipsis span {
+  opacity: 0;
+  animation: blink 1.5s infinite;
+}
+
+.ellipsis span:nth-child(1) {
+  animation-delay: 0s;
+}
+.ellipsis span:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.ellipsis span:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}

@@ -5,3 +5,4 @@
 [ ] scroll transcript down
 [ ] improve metadata
 [ ] fix longitude and latitude
+[ ] add violence to type

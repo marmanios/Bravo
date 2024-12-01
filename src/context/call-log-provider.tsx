@@ -14,6 +14,7 @@ export default function CallLogProvider({
   const [inCall, setInCall] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [createMode, setCreateMode] = useState(false);
+  const [aiThinking, setAiThinking] = useState(false);
 
   return (
     <>
@@ -31,6 +32,8 @@ export default function CallLogProvider({
           setEditMode,
           createMode,
           setCreateMode,
+          aiThinking,
+          setAiThinking,
         }}
       >
         {children}

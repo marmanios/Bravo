@@ -78,7 +78,12 @@ const Map = ({ loading }: props) => {
           <Headphones size={34} />
           <div className="flex flex-col gap-2">
             <p className="font-light">
-              {inCall ? "In Call" : "Incoming Call..."}
+              {inCall ? "In Call" : "Incoming Call"}
+              <span className="ellipsis">
+                <span>.</span>
+                <span>.</span>
+                <span>.</span>
+              </span>
             </p>
             <div className="flex gap-2">
               {!inCall && (

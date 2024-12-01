@@ -2,7 +2,7 @@
 
 import Window from "../window";
 import { cn } from "@/utils";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import useTranscript from "@/hooks/getTranscript";
 import useMetadata from "@/hooks/getMetadata";
 import useCallLog from "@/context/use-call-log";
@@ -11,7 +11,8 @@ type props = {
 };
 
 export default function Transcript({ loading }: props) {
-  const { selectedCallLog, expandTranscript, setMetaData } = useCallLog();
+  const { selectedCallLog, expandTranscript, setMetaData, setAiThinking } =
+    useCallLog();
   // const { data: transcript, isLoading } = useTranscript(TEMPTRANSCRIPTLINK);
   const {
     data: transcript,
@@ -25,6 +26,14 @@ export default function Transcript({ loading }: props) {
       setMetaData(data);
     },
   });
+
+  useEffect(() => {
+    if (metadataMutation.isPending) {
+      setAiThinking(true);
+    } else {
+      setAiThinking(false);
+    }
+  }, [metadataMutation.isPending]);
 
   useEffect(() => {
     setLastUpdateLength(0);

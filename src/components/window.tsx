@@ -9,6 +9,7 @@ import {
   X,
 } from "lucide-react";
 import { use, useEffect, useState } from "react";
+import { ThreeCircles } from "react-loader-spinner";
 
 type props = {
   title: string;
@@ -21,6 +22,7 @@ type props = {
   parentID?: string;
   controlSelected?: boolean;
   expandable?: boolean;
+  ai?: boolean;
 };
 
 function Window({
@@ -34,6 +36,7 @@ function Window({
   parentID,
   controlSelected,
   expandable,
+  ai,
 }: props) {
   const {
     selectedCallLog,
@@ -44,6 +47,7 @@ function Window({
     setCreateMode,
     setEditMode,
     setMetaData,
+    aiThinking,
   } = useCallLog();
   const [fetching, setFetching] = useState(false);
 
@@ -69,10 +73,22 @@ function Window({
             : ""}
         </h2>
         <div className="ml-auto flex">
+          {aiThinking && ai && (
+            <ThreeCircles
+              visible={true}
+              height={18}
+              width={18}
+              color="#4fa94d"
+              ariaLabel="three-circles-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          )}
           <Circle
             strokeWidth={0.7}
             size={18}
             className={cn(
+              "ml-1.5",
               loading === "initialize" && "text-destructive fill-destructive",
               fetching && "text-yellow-500 fill-yellow-500",
               loading !== "initialize" &&

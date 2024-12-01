@@ -16,6 +16,8 @@ type TCallLogContext = {
   setEditMode: Dispatch<SetStateAction<boolean>>;
   createMode: boolean;
   setCreateMode: Dispatch<SetStateAction<boolean>>;
+  aiThinking: boolean;
+  setAiThinking: Dispatch<SetStateAction<boolean>>;
 };
 
 const CallLogContext = createContext<TCallLogContext | undefined>(undefined);
