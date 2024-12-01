@@ -1,7 +1,7 @@
 "use client";
 
 import "leaflet/dist/leaflet.css";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import Window from "../window";
 import useCallLogs from "@/hooks/getAllCallLogs";
 
@@ -11,18 +11,47 @@ import "leaflet-defaulticon-compatibility";
 import { callTypeMap } from "@/utils/types";
 import { cn } from "@/utils";
 import { format } from "date-fns";
+import useCallLog from "@/context/use-call-log";
+import { useEffect } from "react";
 
 type props = {
   loading: "initialize" | "fetching" | "completed";
 };
 
+// Custom component to move the map
+const MoveToMarker = ({
+  latitude,
+  longitude,
+}: {
+  latitude: number;
+  longitude: number;
+}) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (latitude && longitude) {
+      map.setView([latitude, longitude], map.getZoom(), {
+        animate: true,
+        duration: 1,
+      });
+    }
+  }, [latitude, longitude, map]);
+
+  return null;
+};
+
 const Map = ({ loading }: props) => {
+  const { selectedCallLog, expandTranscript } = useCallLog();
+
   const { data: callLogs } = useCallLogs();
 
   return (
     <Window
-      className="col-span-3 row-span-4 overflow-hidden relative"
-      title="Map"
+      className={cn(
+        "col-span-3 row-span-4 overflow-hidden relative",
+        expandTranscript && "col-span-1"
+      )}
+      title={`Map`}
       loading={loading}
       loadingOffset={1800}
       shield
@@ -37,12 +66,25 @@ const Map = ({ loading }: props) => {
           zoom={16}
           zoomControl={false}
         >
-          <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png" />
+          <TileLayer
+            url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+            updateWhenZooming={false} // Prevents reloading tiles during zoom animations
+            updateWhenIdle={true} // Ensures tiles are loaded only when idle
+            keepBuffer={20} // Keeps a buffer of extra tiles around the current view
+          />
+
+          {selectedCallLog?.latitude && selectedCallLog?.longitude && (
+            <MoveToMarker
+              latitude={+selectedCallLog.latitude}
+              longitude={+selectedCallLog.longitude}
+            />
+          )}
+
           {callLogs?.map(
             (log) =>
               log.latitude &&
               log.longitude && (
-                <Marker position={[+log.latitude, +log.longitude]}>
+                <Marker key={log.id} position={[+log.latitude, +log.longitude]}>
                   <Popup closeButton={false}>
                     <div className="bg-background border p-2 rounded font-scp text-foreground w-[300px]">
                       <div className="flex w-full items-end justify-between pl-2">

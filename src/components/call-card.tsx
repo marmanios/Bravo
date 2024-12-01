@@ -1,5 +1,11 @@
+import useCallLog from "@/context/use-call-log";
 import { cn } from "@/utils";
-import { TCallType, TEmergencyStatus, callTypeMap } from "@/utils/types";
+import {
+  TCallLog,
+  TCallType,
+  TEmergencyStatus,
+  callTypeMap,
+} from "@/utils/types";
 import { format } from "date-fns";
 import {
   Ambulance,
@@ -26,22 +32,29 @@ export const typeMap = {
 };
 
 type props = {
-  id: number;
-  time: string;
-  status: TEmergencyStatus;
-  type: TCallType;
-  title: string;
+  log: TCallLog;
 };
 
-function CallCard({ id, time, status, type }: props) {
+function CallCard({ log }: props) {
+  const { selectedCallLog, setSelectedCallLog } = useCallLog();
+  const { id, createdAt, status, type } = log;
+
   return (
-    <div className="flex items-center px-4 py-2 border-b cursor-pointer hover:bg-[#16253f] transition-all">
+    <div
+      onClick={() => {
+        setSelectedCallLog(log);
+      }}
+      className={cn(
+        "flex items-center px-4 py-2 border-b relative cursor-pointer hover:bg-[#131f35] transition-all",
+        selectedCallLog?.id === id && "bg-[#192b4a] hover:bg-[#192b4a]"
+      )}
+    >
       <div className="flex items-center justify-center w-8 h-8 rounded-full">
-        {typeMap[type]}
+        {type && typeMap[type]}
       </div>
       <div className="flex-1">
         <div className="flex items-center ml-2">
-          <p className="text-sm font-light">{callTypeMap[type]}</p>
+          <p className="text-sm font-light">{type && callTypeMap[type]}</p>
           <p
             className={cn(
               "ml-auto text-xs font-light uppercase tracking-[1px]",
@@ -57,7 +70,7 @@ function CallCard({ id, time, status, type }: props) {
         <div className="flex justify-between mt-1">
           <p className="text-xs text-muted ml-2">#{id}</p>
           <p className="ml-auto text-xs text-gray-500">
-            {format(time, "yyyy-MM-dd HH:mm:ss")}
+            {format(createdAt, "yyyy-MM-dd HH:mm:ss")}
           </p>
         </div>
       </div>

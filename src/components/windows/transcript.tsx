@@ -10,6 +10,7 @@ type props = {
 };
 
 export default function Transcript({ loading }: props) {
+  const { expandTranscript } = useCallLog();
   // const { data: transcript, isLoading } = useTranscript(TEMPTRANSCRIPTLINK);
   const { data: transcript, status, refetch } = useTranscript();
   const [ lastUpdateLength, setLastUpdateLength ] = useState<number>(0);
@@ -83,8 +84,8 @@ export default function Transcript({ loading }: props) {
 
   return (
     <Window
-      className="col-span-2 row-span-3"
-      title="Transcript"
+      className={cn("col-span-2 row-span-3", expandTranscript && "col-span-4")}
+      title={`Transcript`}
       loading={loading}
       loadingOffset={200}
       parentID="transcript-container"
