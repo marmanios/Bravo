@@ -1,7 +1,7 @@
 "use client";
 
-import CallCard from "./call-card";
-import Window from "./window";
+import CallCard from "../call-card";
+import Window from "../window";
 import useCallLogs from "@/hooks/getAllCallLogs";
 
 export default function CallLog() {
@@ -9,7 +9,7 @@ export default function CallLog() {
 
   return (
     <Window
-      className="col-span-2 row-span-4"
+      className="col-span-1 row-span-4"
       title="Call Log"
       shield
       circle="green"

@@ -1,7 +1,7 @@
 "use client";
 
 import { TEMPTRANSCRIPTLINK, TEMPTRANSCRIPTCUES } from "@/utils/constants";
-import Window from "./window";
+import Window from "../window";
 import { cn } from "@/utils";
 import { useEffect, useRef, useState } from "react";
 import useTranscript from "@/hooks/getTranscript";
@@ -44,11 +44,11 @@ export default function Transcript() {
           const texts: string[] = TEMPTRANSCRIPTCUES.slice(i - 20, i).map(
             (cue) => cue.text
           );
-          console.log(`Texts: ${texts.join("\n")}`);
-          metadataMutation.mutate({ text: texts.join("\n") });
+          // metadataMutation.mutate({ text: texts.join("\n") });
         }
-
+        const element = document.getElementById("cues-container");
         await new Promise((resolve) => setTimeout(resolve, timeToWait));
+        element!.scrollTop = element!.scrollHeight + 200;
       }
 
       return;
@@ -61,7 +61,7 @@ export default function Transcript() {
   }, [isPlayingTranscript]);
 
   return (
-    <Window className="col-span-2 row-span-3" title="Transcript" circle="red">
+    <Window className="col-span-2 row-span-3" title="Transcript" circle="red" parentID="cues-container">
       <div className="flex flex-col gap-6 p-2 font-light texts">
         {visibleCues.map((cue, index) => (
           <div key={`cue_${index}`} className={cn("flex justify-between")}>
@@ -72,11 +72,11 @@ export default function Transcript() {
             <p className="">{cue.start}</p>
           </div>
         ))}
-        <div className="flex">
-          <p className="ml-auto uppercase">[Call Ended]</p>
+        <div id={'cues-end'} className="flex">
+          {/* <p className="ml-auto uppercase">[Call Ended]</p>
           <p className="ml-auto text-background">
             {new Date().toLocaleTimeString()}
-          </p>
+          </p> */}
         </div>
       </div>
     </Window>

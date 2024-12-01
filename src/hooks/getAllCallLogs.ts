@@ -5,6 +5,7 @@ import {
   TCallType,
   TEmergencyPriority,
   TEmergencyStatus,
+  TResponderStatus,
   TResponderType,
 } from "@/utils/types";
 import { useQuery } from "@tanstack/react-query";
@@ -26,6 +27,7 @@ export const DBtoClientCallLog = (dbCallLog: TCallLogDB): TCallLog => {
     longitude: dbCallLog.longitude,
     locationDescription: dbCallLog.location_description,
     responseType: dbCallLog.response_type as TResponderType,
+    responseStatus: dbCallLog.response_status as TResponderStatus,
     dispatchedAt: dbCallLog.dispatched_at,
   };
 };

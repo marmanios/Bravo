@@ -12,6 +12,7 @@ const spaceMono = Space_Mono({
 const sourceCodePro = Source_Code_Pro({
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600", "700"],
+  variable: "--font-scp",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body className={`${sourceCodePro.className} antialiased`}>
+      <body className={`${sourceCodePro.variable} font-scp antialiased`}>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

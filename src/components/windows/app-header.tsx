@@ -9,8 +9,7 @@ function AppHeader({}: props) {
   return (
     <div className="py-2 px-4 border rounded mt-4 mx-4 flex items-center uppercase gap-6 font-extralight">
       <h1>BRAVO</h1>
-      <p>ACTIVE</p>
-      <p>ZAYN ABED</p>
+      <p>DISPATCHER::AZAYN</p>
       <p className="ml-auto">NEW YORK, NY</p>
       {/* <Clock format="HH:mm:ss" ticking={true} timezone={"US/Eastern"} /> */}
       <Clock format="YYYY-MM-DD" ticking={false} timezone={"US/Eastern"} />

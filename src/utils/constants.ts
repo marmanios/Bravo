@@ -6,9 +6,9 @@ import { TTranscriptCue, TTranscriptInstance } from "./types";
 export const TEMPTRANSCRIPTLINK: string =
   "https://static1.squarespace.com/static/5b7257d68ab7222baffba243/t/5c7a8d2ef9619a8f905572b4/1551535408224/0510potcop_freep.mp3/original/0510potcop_freep.mp3";
 export const TEMPTRANSCRIPTCUES: TTranscriptCue[] = [
-  // { start: 0.08, end: 1.72, text: "We've removed some personal information\n" },
-  // { start: 1.72, end: 2.78, text: "from the following 9 -1\n" },
-  // { start: 2.78, end: 4.3, text: "-1 call. You will hear\n" },
+  { start: 0.08, end: 1.72, text: "We've removed some personal information\n" },
+  { start: 1.72, end: 2.78, text: "from the following 9 -1\n" },
+  { start: 2.78, end: 4.3, text: "-1 call. You will hear\n" },
   { start: 20, end: 20.9, text: "Okay, do you and your\n" },
   { start: 20.9, end: 23.44, text: "wife? Yes. Over notes of\n" },
   { start: 23.44, end: 25.3, text: "what? Marijuana. I don't know\n" },

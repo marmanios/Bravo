@@ -79,3 +79,27 @@ body {
 ::-webkit-scrollbar-thumb {
   @apply rounded-full bg-border border-[1px] border-transparent border-solid bg-clip-padding;
 }
+
+.leaflet-popup .leaflet-popup-content-wrapper {
+  border-radius: 0px;
+}
+
+.leaflet-popup-tip {
+  display: none;
+}
+
+.leaflet-popup-content-wrapper .leaflet-popup-content {
+  margin: 0 !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: none !important;
+}
+
+.leaflet-popup-content p {
+  margin: 0 !important;
+}
+
+.leaflet-marker-icon {
+  filter: hue-rotate(13deg);
+}

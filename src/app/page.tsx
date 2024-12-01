@@ -1,8 +1,8 @@
-import AppHeader from "@/components/app-header";
-import CallLog from "@/components/call-log";
-import Map from "@/components/map";
-import Status from "@/components/status";
-import Transcript from "@/components/transcript";
+import AppHeader from "@/components/windows/app-header";
+import CallLog from "@/components/windows/call-log";
+import Map from "@/components/windows/map";
+import Status from "@/components/windows/status";
+import Transcript from "@/components/windows/transcript";
 import Window from "@/components/window";
 
 export default function HomePage() {
