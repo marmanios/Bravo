@@ -66,6 +66,7 @@ export default function Bravo({ loading }: props) {
   const [ended, setEnded] = useState("");
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     if (
@@ -165,6 +166,7 @@ export default function Bravo({ loading }: props) {
       setCreated(updatedLog.createdAt || "");
       setDispatched(updatedLog.dispatchedAt || "");
       setEnded(updatedLog.endedAt || "");
+      setStatus(updatedLog.status || "");
     } else {
       setName("");
       setPhone("");
@@ -179,6 +181,7 @@ export default function Bravo({ loading }: props) {
       setCreated("");
       setDispatched("");
       setEnded("");
+      setStatus("");
       setMetaData(null);
     }
   }, [selectedCallLog, editMode, callLogs]);
@@ -436,6 +439,32 @@ export default function Bravo({ loading }: props) {
                 </SelectContent>
               </Select>
             </div>
+            <div className="col-span-2">
+              <Label>Case Status</Label>
+              <Select
+                value={status}
+                onValueChange={setStatus}
+                defaultValue={status}
+              >
+                <SelectTrigger className="py-6">
+                  <SelectValue placeholder="Select case status..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="pending">
+                    <p className="flex items-center gap-2">Pending</p>
+                  </SelectItem>
+                  <SelectItem value="active">
+                    <p className="flex items-center gap-2">Active</p>
+                  </SelectItem>
+                  <SelectItem value="resolved">
+                    <p className="flex items-center gap-2">Resolved</p>
+                  </SelectItem>
+                  <SelectItem value="cancelled">
+                    <p className="flex items-center gap-2">Cancelled</p>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
             {editMode && (
               <Button
@@ -463,6 +492,7 @@ export default function Bravo({ loading }: props) {
                   priority: priority,
                   response_type: responseType,
                   response_status: responseStatus,
+                  status: status,
                 };
 
                 putCallLog.mutate(newCallLog);
@@ -596,6 +626,13 @@ export default function Bravo({ loading }: props) {
                 {responseStatus
                   ? responderStatusMap[responseStatus as TResponderStatus]
                   : "No Response"}
+              </p>
+            </div>
+
+            <div className="col-span-2">
+              <Label>Case Status</Label>
+              <p className="py-2 px-4 bg-gray-800 rounded">
+                {status || "No status"}
               </p>
             </div>
             <Button
