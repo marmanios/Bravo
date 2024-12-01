@@ -11,13 +11,13 @@ type props = {
 };
 
 export default function Transcript({ loading }: props) {
-  const { expandTranscript } = useCallLog();
+  const { expandTranscript, setMetaData } = useCallLog();
   // const { data: transcript, isLoading } = useTranscript(TEMPTRANSCRIPTLINK);
   const { data: transcript, status, refetch } = useTranscript();
   const [lastUpdateLength, setLastUpdateLength] = useState<number>(0);
   const metadataMutation = useMetadata({
-    callback: (data) => {
-      console.log(data);
+    callback: (data) => { 
+      setMetaData(data);
     },
   });
 
@@ -90,6 +90,7 @@ export default function Transcript({ loading }: props) {
       loading={loading}
       loadingOffset={200}
       parentID="transcript-container"
+      expandable
     >
       <div className="flex flex-col gap-6 p-2 font-light texts">
         {status === "success" &&

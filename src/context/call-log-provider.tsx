@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import CallLogContext from "./call-log-context";
-import { TCallLog } from "@/utils/types";
+import { TCallLog, TMetadata } from "@/utils/types";
 
 export default function CallLogProvider({
   children,
@@ -10,6 +10,7 @@ export default function CallLogProvider({
 }>) {
   const [selectedCallLog, setSelectedCallLog] = useState<TCallLog | null>(null);
   const [expandTranscript, setExpandTranscript] = useState(false);
+  const [metaData, setMetaData] = useState<TMetadata | null>(null);
 
   return (
     <>
@@ -19,6 +20,8 @@ export default function CallLogProvider({
           setSelectedCallLog,
           expandTranscript,
           setExpandTranscript,
+          metaData,
+          setMetaData,
         }}
       >
         {children}

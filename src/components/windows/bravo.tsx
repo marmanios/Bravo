@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import Window from "../window";
 import { Label } from "../ui/label";
@@ -20,6 +20,7 @@ import {
   TResponderStatus,
   TResponderType,
   callTypeMap,
+  emergencyPriorityMap,
   responderStatusMap,
   responderTypeMap,
 } from "@/utils/types";
@@ -38,7 +39,7 @@ type props = {
 export default function Bravo({ loading }: props) {
   const putCallLog = usePutCallLog();
   const { data: callLogs } = useCallLogs();
-  const { selectedCallLog, setSelectedCallLog, expandTranscript } =
+  const { selectedCallLog, setSelectedCallLog, expandTranscript, metaData } =
     useCallLog();
   const [editMode, setEditMode] = useState(false);
   const [createMode, setCreateMode] = useState(false);
@@ -56,6 +57,27 @@ export default function Bravo({ loading }: props) {
   const [created, setCreated] = useState("");
   const [dispatched, setDispatched] = useState("");
   const [ended, setEnded] = useState("");
+
+  useEffect(() => {
+    if (metaData?.callback_information !== undefined && metaData.callback_information !== '' && phone === '') {
+      setPhone(metaData.callback_information);
+    }
+    if (metaData?.caller_name !== undefined && metaData.caller_name !== '' && name === '') {
+      setName(metaData.caller_name);
+    }
+    if (metaData?.incident_location !== undefined && metaData.incident_location !== '' && location === '') {
+      setLocation(metaData.incident_location);
+    }
+    if (metaData?.incident_nature !== undefined && metaData.incident_nature in callTypeMap && callType === '') {
+      setCallType(metaData.incident_nature);
+    }
+    if (metaData?.priority !== undefined && metaData.priority in emergencyPriorityMap && priority === '') {
+      setPriority(metaData.priority);
+    }
+    if (metaData?.people_locations !== undefined && metaData.people_locations !== '' && situation === '') {
+      setSituation(metaData.people_locations);
+    }
+  }, [metaData, name, phone, location, callType, priority, situation]);
 
   useEffect(() => {
     if (selectedCallLog) {

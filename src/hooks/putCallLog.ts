@@ -1,14 +1,17 @@
-import { TCallLog, TCallLogInsertDB, TTranscriptMessage } from "@/utils/types";
+import { TApiResponse, TCallLog, TCallLogInsertDB, TTranscriptMessage } from "@/utils/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "./use-toast";
 
-export const putCallLog = async (callLog: TCallLogInsertDB): Promise<void> => {
+export const putCallLog = async (callLog: TCallLogInsertDB): Promise<TCallLog | null> => {
   try {
-    await fetch(`/api/call-logs`, {
+    const res = await fetch(`/api/call-logs`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...callLog }),
     });
+    const json: TApiResponse<TCallLog> = await res.json();
+    return json?.data ?? null;
+
   } catch (error) {
     console.error("Error upserting call logs:", error);
     throw new Error("Error upserting call logs");

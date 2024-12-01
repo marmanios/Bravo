@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 const ROW_ID = 19;
 
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const supabase = await createClient();
     const { data, error } = await supabase
@@ -43,13 +43,14 @@ export async function PATCH(req: NextRequest) {
   try {
     const reqJson = await req.json();
     const reqTranscript: TTranscriptMessage[] = reqJson.transcript;
+    const reqLogID: number = reqJson.logID;
 
     const supabase = await createClient();
-    const { data: fetchedData, error: fetchedError } = await supabase.from('transcript').select('*').eq('id', ROW_ID);
+    const { data: fetchedData, error: fetchedError } = await supabase.from('transcript').select('*').eq('log_id', reqLogID);
     if (fetchedData?.length === 0) {
-      const { data, error } = await supabase.from('transcript').insert({id: ROW_ID, transcript: reqTranscript});
+      const { data, error } = await supabase.from('transcript').insert({transcript: reqTranscript, log_id: reqLogID});
     } else {
-      const { data, error } = await supabase.from('transcript').update({transcript: reqTranscript}).eq('id', ROW_ID);;
+      const { data, error } = await supabase.from('transcript').update({transcript: reqTranscript}).eq('log_id', reqLogID);;
     }
 
     if (fetchedError) {

@@ -50,7 +50,7 @@ export type TCallType =
   | "AnimalControl"
   | "Other";
 
-export const callTypeMap = {
+export const callTypeMap: Record<TCallType, string> = {
   Fire: "Fire",
   Medical: "Medical",
   Police: "Police",
@@ -63,6 +63,11 @@ export const callTypeMap = {
 };
 
 export type TEmergencyPriority = "low" | "medium" | "high";
+export const emergencyPriorityMap: Record<TEmergencyPriority, string> = {
+  low: "Low",
+  medium: "Medium",
+  high: "High",
+};
 export type TEmergencyStatus = "pending" | "active" | "resolved" | "cancelled";
 export type TResponderStatus =
   | "Available"
@@ -86,7 +91,8 @@ export type TResponderType =
   | "searchRescue"
   | "noResponse";
 
-export const responderTypeMap = {
+
+export const responderTypeMap: Record<TResponderType, string> = {
   noResponse: "No Response",
   police: "Police",
   fire: "Fire",
@@ -127,9 +133,10 @@ export type TMetadata = {
   caller_name: string;
   callback_information: string;
   incident_location: string;
+  priority: string;
   incident_nature: string;
   people_locations: string;
-};
+}
 
 export type TMetadataRequestBody = {
   text: string;
