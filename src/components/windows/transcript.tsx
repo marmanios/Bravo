@@ -12,7 +12,7 @@ type props = {
 };
 
 export default function Transcript({ loading }: props) {
-  const { selectedCallLog, expandTranscript, setMetaData, setAiThinking } =
+  const { inCall, selectedCallLog, expandTranscript, setMetaData, setAiThinking } =
     useCallLog();
   // const { data: transcript, isLoading } = useTranscript(TEMPTRANSCRIPTLINK);
   const {
@@ -47,6 +47,13 @@ export default function Transcript({ loading }: props) {
 
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);
+
+  useEffect(() => {
+    if (inCall) {
+      const element = document.getElementById("cues-end");
+      element!.scrollIntoView({ behavior: "smooth" });
+    }
+  },[transcript, inCall])
 
   useEffect(() => {
     if (transcript?.length && transcript.length > lastUpdateLength + 3) {
