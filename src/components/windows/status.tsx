@@ -4,6 +4,7 @@ import useCallLogs from "@/hooks/getAllCallLogs";
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -67,92 +68,103 @@ export default function Status({ loading }: props) {
           </TableRow>
         </TableHeader>
         <TableBody className="text-sm">
-          {callLogs
-            ?.filter((log) => {
-              return log.status === "active" || log.status === "pending";
-            })
-            .filter((log) => log.type)
-            .sort((a, b) => {
-              if (sort === "priority") {
-                const priorityOrder = { low: 0, medium: 1, high: 2 };
-                return (
-                  (priorityOrder[b.priority!] || 0) -
-                  (priorityOrder[a.priority!] || 0)
-                );
-              }
-              if (sort === "status") {
-                const statusOrder = {
-                  active: 2,
-                  pending: 1,
-                  resolved: 0,
-                  cancelled: 0,
-                };
-                return (
-                  (statusOrder[b.status!] || 0) - (statusOrder[a.status!] || 0)
-                );
-              }
-              if (sort === "time") {
-                return (
-                  new Date(a.createdAt).getTime() -
-                  new Date(b.createdAt).getTime()
-                );
-              }
-              if (sort === "type") {
-                return (a.type || "").localeCompare(b.type || "");
-              }
-              return 0;
-            })
-            ?.map((log) => (
-              <TableRow
-                key={log.id}
-                onClick={() => {
-                  setSelectedCallLog(log);
-                }}
-                className={cn(
-                  "cursor-pointer hover:bg-[#16253f] transition-all",
-                  selectedCallLog?.id === log.id && "bg-[#1c2e4c]"
-                )}
-              >
-                <TableCell className="text-muted">#{log.id}</TableCell>
-                <TableCell>
-                  <TriangleAlert
-                    className={cn(
-                      "w-6 h-6",
-                      log.priority === "high" && "text-red-500",
-                      log.priority === "medium" && "text-yellow-500",
-                      log.priority === "low" && "text-green-500"
-                    )}
-                  />
-                </TableCell>
-                <TableCell>{typeMap[log.type ?? "Other"]}</TableCell>
-                <TableCell>
-                  {format(log.createdAt, "yyyy-MM-dd HH:mm:ss")}
-                </TableCell>
-                <TableCell className="text-sm font-light">{log.city}</TableCell>
-                <TableCell className="text-sm font-light">
-                  {log.address}
-                </TableCell>
-                <TableCell>
-                  {log.responseType
-                    ? responderTypeMap[log.responseType]
-                    : "No Response"}
-                </TableCell>
-                <TableCell>
-                  {log.responseStatus
-                    ? responderStatusMap[log.responseStatus]
-                    : "No Response"}
-                </TableCell>
-                <TableCell
+          {callLogs?.filter((log) => {
+            return log.status === "active" || log.status === "pending";
+          }).length ? (
+            callLogs
+              ?.filter((log) => {
+                return log.status === "active" || log.status === "pending";
+              })
+              .filter((log) => log.type)
+              .sort((a, b) => {
+                if (sort === "priority") {
+                  const priorityOrder = { low: 0, medium: 1, high: 2 };
+                  return (
+                    (priorityOrder[b.priority!] || 0) -
+                    (priorityOrder[a.priority!] || 0)
+                  );
+                }
+                if (sort === "status") {
+                  const statusOrder = {
+                    active: 2,
+                    pending: 1,
+                    resolved: 0,
+                    cancelled: 0,
+                  };
+                  return (
+                    (statusOrder[b.status!] || 0) -
+                    (statusOrder[a.status!] || 0)
+                  );
+                }
+                if (sort === "time") {
+                  return (
+                    new Date(a.createdAt).getTime() -
+                    new Date(b.createdAt).getTime()
+                  );
+                }
+                if (sort === "type") {
+                  return (a.type || "").localeCompare(b.type || "");
+                }
+                return 0;
+              })
+              ?.map((log) => (
+                <TableRow
+                  key={log.id}
+                  onClick={() => {
+                    setSelectedCallLog(log);
+                  }}
                   className={cn(
-                    "text-right font-light uppercase tracking-[1px]",
-                    log.status === "pending" && "text-yellow-500",
-                    log.status === "active" && "text-red-500"
+                    "cursor-pointer hover:bg-[#16253f] transition-all",
+                    selectedCallLog?.id === log.id && "bg-[#1c2e4c]"
                   )}
                 >
-                  {log.status}
-                </TableCell>
-              </TableRow>
-            ))}
+                  <TableCell className="text-muted">#{log.id}</TableCell>
+                  <TableCell>
+                    <TriangleAlert
+                      className={cn(
+                        "w-6 h-6",
+                        log.priority === "high" && "text-red-500",
+                        log.priority === "medium" && "text-yellow-500",
+                        log.priority === "low" && "text-green-500"
+                      )}
+                    />
+                  </TableCell>
+                  <TableCell>{typeMap[log.type ?? "Other"]}</TableCell>
+                  <TableCell>
+                    {format(log.createdAt, "yyyy-MM-dd HH:mm:ss")}
+                  </TableCell>
+                  <TableCell className="text-sm font-light">
+                    {log.city}
+                  </TableCell>
+                  <TableCell className="text-sm font-light">
+                    {log.address}
+                  </TableCell>
+                  <TableCell>
+                    {log.responseType
+                      ? responderTypeMap[log.responseType]
+                      : "No Response"}
+                  </TableCell>
+                  <TableCell>
+                    {log.responseStatus
+                      ? responderStatusMap[log.responseStatus]
+                      : "No Response"}
+                  </TableCell>
+                  <TableCell
+                    className={cn(
+                      "text-right font-light uppercase tracking-[1px]",
+                      log.status === "pending" && "text-yellow-500",
+                      log.status === "active" && "text-red-500"
+                    )}
+                  >
+                    {log.status}
+                  </TableCell>
+                </TableRow>
+              ))
+          ) : (
+            <TableCaption className="p-4 font-light grid place-content-center h-full w-full">
+              No active calls logged.
+            </TableCaption>
+          )}
         </TableBody>
       </Table>
     </Window>

@@ -12,21 +12,21 @@ import { cn } from "@/utils";
 export default function HomePage() {
   const [loading, setLoading] = useState<
     "initialize" | "fetching" | "completed"
-  >("completed");
+  >("initialize");
 
-  // useEffect(() => {
-  //   const fetchingTimeout = setTimeout(() => {
-  //     setLoading("fetching");
-  //     const completedTimeout = setTimeout(() => {
-  //       setLoading("completed");
-  //       clearTimeout(completedTimeout);
-  //     }, 2000);
-  //   }, 1500);
+  useEffect(() => {
+    const fetchingTimeout = setTimeout(() => {
+      setLoading("fetching");
+      const completedTimeout = setTimeout(() => {
+        setLoading("completed");
+        clearTimeout(completedTimeout);
+      }, 2000);
+    }, 1500);
 
-  //   return () => {
-  //     clearTimeout(fetchingTimeout);
-  //   };
-  // }, []);
+    return () => {
+      clearTimeout(fetchingTimeout);
+    };
+  }, []);
 
   return (
     <div className="h-screen max-h-screen flex flex-col overflow-hidden">
@@ -34,7 +34,7 @@ export default function HomePage() {
       <main
         className={cn(
           "h-[94vh] grid grid-cols-6 grid-rows-6 gap-4 p-4 transition-all duration-700",
-          loading === "initialize" && "h-0"
+          loading === "initialize" && "h-[20vh]"
         )}
       >
         <CallLog loading={loading} />

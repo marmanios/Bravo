@@ -20,12 +20,17 @@ export default function CallLog({ loading }: props) {
       loadingOffset={600}
       loading={loading}
     >
-      {callLogs &&
+      {callLogs ? (
         callLogs
           .filter((log) => log.type)
           .map((log) => {
             return <CallCard key={log.id} log={log} />;
-          })}
+          })
+      ) : (
+        <div className="p-4 font-light grid place-content-center h-full">
+          No calls logged.
+        </div>
+      )}
     </Window>
   );
 }

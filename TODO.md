@@ -8,4 +8,4 @@
 [X] add violence to type
 [ ] demo page
 [ ] timeline
-[ ] convert drop downs to buttons
+[X] convert drop downs to buttons
