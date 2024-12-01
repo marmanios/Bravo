@@ -12,8 +12,13 @@ type props = {
 };
 
 export default function Transcript({ loading }: props) {
-  const { inCall, selectedCallLog, expandTranscript, setMetaData, setAiThinking } =
-    useCallLog();
+  const {
+    inCall,
+    selectedCallLog,
+    expandTranscript,
+    setMetaData,
+    setAiThinking,
+  } = useCallLog();
   // const { data: transcript, isLoading } = useTranscript(TEMPTRANSCRIPTLINK);
   const {
     data: transcript,
@@ -53,7 +58,7 @@ export default function Transcript({ loading }: props) {
       const element = document.getElementById("cues-end");
       element!.scrollIntoView({ behavior: "smooth" });
     }
-  },[transcript, inCall])
+  }, [transcript, inCall]);
 
   useEffect(() => {
     if (transcript?.length && transcript.length > lastUpdateLength + 3) {
@@ -129,33 +134,39 @@ export default function Transcript({ loading }: props) {
       parentID="transcript-container"
       expandable
     >
-      <div className="flex flex-col gap-6 p-2 font-light texts">
-        {status === "success" &&
-          transcript?.map((message, index) => (
-            <div key={`transcript_message_${index}`}>
-              <p className={""}>{message.text}</p>
-              <div className="flex">
-                <p className="text-sm text-muted uppercase">Caller</p>
-                <p className="text-sm text-muted ml-auto">
-                  [
-                  {selectedCallLog
-                    ? formatMessageTime(
-                        selectedCallLog?.createdAt,
-                        message.timestamp
-                      )
-                    : message.timestamp}
-                  ]
-                </p>
+      {selectedCallLog ? (
+        <div className="flex flex-col gap-6 p-2 font-light texts">
+          {status === "success" &&
+            transcript?.map((message, index) => (
+              <div key={`transcript_message_${index}`}>
+                <p className={""}>{message.text}</p>
+                <div className="flex">
+                  <p className="text-sm text-muted uppercase">Caller</p>
+                  <p className="text-sm text-muted ml-auto">
+                    [
+                    {selectedCallLog
+                      ? formatMessageTime(
+                          selectedCallLog?.createdAt,
+                          message.timestamp
+                        )
+                      : message.timestamp}
+                    ]
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        <div id={"cues-end"} className="flex">
-          {/* <p className="ml-auto uppercase">[Call Ended]</p>
+            ))}
+          <div id={"cues-end"} className="flex">
+            {/* <p className="ml-auto uppercase">[Call Ended]</p>
           <p className="ml-auto text-background">
             {new Date().toLocaleTimeString()}
           </p> */}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="p-4 font-light grid place-content-center h-full">
+          No call selected.
+        </div>
+      )}
     </Window>
   );
 }

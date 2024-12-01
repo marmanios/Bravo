@@ -66,7 +66,9 @@ export default function Bravo({ loading }: props) {
   const [ended, setEnded] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
-  const [responderOptions, setResponderOptions] = useState<TResponderStatus[]>([]);
+  const [responderOptions, setResponderOptions] = useState<TResponderStatus[]>(
+    []
+  );
   const [status, setStatus] = useState("");
 
   useEffect(() => {
