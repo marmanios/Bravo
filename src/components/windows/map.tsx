@@ -74,7 +74,7 @@ const Map = ({ loading }: props) => {
     } else {
       setCallTimer(0);
     }
-  }, [selectedCallLog]);
+  }, [selectedCallLog, inCall]);
 
   const { data: callLogs, refetch } = useCallLogs();
 
@@ -124,6 +124,7 @@ const Map = ({ loading }: props) => {
                         callLogs.filter((log) => !log.type)[0]
                       );
                       setInCall(true);
+                      setCallTimer(0);
                       setCreateMode(true);
                     }}
                   >

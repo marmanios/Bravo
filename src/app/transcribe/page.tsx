@@ -58,7 +58,7 @@ export default function Dictaphone(): JSX.Element {
           );
 
           // Get the new additions to the transcript (what has changed since the last poll)
-          const newTranscriptPart = transcript.replace(
+          const newTranscriptPart = transcript.toLocaleLowerCase().replace(
             previousTranscriptRef.current,
             ""
           );
@@ -72,7 +72,7 @@ export default function Dictaphone(): JSX.Element {
               ];
 
               // Update the previous transcript in the ref for the next comparison
-              previousTranscriptRef.current = transcript;
+              previousTranscriptRef.current = transcript.toLocaleLowerCase();
 
               return updatedObject;
             });
