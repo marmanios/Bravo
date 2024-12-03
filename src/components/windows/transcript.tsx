@@ -109,6 +109,7 @@ export default function Transcript({ loading }: props) {
                 </div>
               </div>
             ))}
+          <div id="cues-end"></div>
         </div>
       ) : (
         <div className="p-4 font-light grid place-content-center h-full">
