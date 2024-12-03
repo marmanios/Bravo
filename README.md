@@ -2,7 +2,7 @@
 Winners: 🥇 First Place Overall, 🏆 Best AI Application Built with Cloudflare
 
 # Inspiration 💡
-April 12, 2018 in Cincinnati, Ohio, a failed dispatch mission lead to the death of 16 year-old Kyle Plush. His death was caused by an array of errors, both human and computer, and was completely tragic and preventable. More details on this case are found in the article [here](https://www.cincinnati.com/story/news/2018/04/12/how-everything-went-wrong-seven-hills-student-kyle-plush-ended-up-dead-cincinnati/511736002/).
+April 12, 2018 in Cincinnati, Ohio, a failed dispatch mission lead to the death of 16 year-old Kyle Plush. His death was caused by an array of errors, both human and computer, and was completely tragic and preventable. More details on this case can be found in the article <a href="https://www.cincinnati.com/story/news/2018/04/12/how-everything-went-wrong-seven-hills-student-kyle-plush-ended-up-dead-cincinnati/511736002/" target="_blank">here</a>.
 
 # Overview 📋
 BravoDispatch is a computer-aided dispatcher (CAD) application designed to help dispatch operators better handle calls. Bravo AI extracts critical details from a live caller transcript, and helps manage a set of active cases. It reduces manual data entry, takes some tension off of operators, and improves response times.
@@ -22,7 +22,4 @@ We made the most of our 36 hours, but looking to the future, this app would inco
 # Team composition 🤝
 At the time of writing, we are a team of final-year software engineering students from McMaster University. This is probably our last hackathon and it's been a journey and a blast, thanks to all the people at Hack Western that helped make it happen.
 
-[Zayn Abed](https://github.com/abedmohammed)
-[Maged Armanios](https://github.com/marmanios)
-[Jinal Kasturiarachchi](https://github.com/jinalkast)
-[Jane Klavir](https://github.com/jane-klavir)
+[Zayn Abed](https://www.linkedin.com/in/zayn-abed/), [Maged Armanios](https://www.linkedin.com/in/magedarmanios/), [Jinal Kasturiarachchi](https://www.linkedin.com/in/jinal-k/), [Jane Klavir](https://www.linkedin.com/in/janeklavir/)
