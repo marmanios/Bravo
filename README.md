@@ -2,7 +2,7 @@
 Winners: 🥇 First Place Overall, 🏆 Best AI Application Built with Cloudflare
 
 # Inspiration 💡
-April 12, 2018 in Cincinnati, Ohio, a failed dispatch mission lead to the death of 16 year-old Kyle Plush. His death was caused by an array of errors, both human and computer, and was completely tragic and preventable. More details on this case can be found in the article <a href="https://www.cincinnati.com/story/news/2018/04/12/how-everything-went-wrong-seven-hills-student-kyle-plush-ended-up-dead-cincinnati/511736002/" target="_blank">here</a>.
+April 12, 2018 in Cincinnati, Ohio, a failed dispatch mission lead to the death of 16 year-old Kyle Plush. His death was caused by an array of errors, both human and computer, and was completely tragic and preventable. More details on this case can be found in the article [here](https://www.cincinnati.com/story/news/2018/04/12/how-everything-went-wrong-seven-hills-student-kyle-plush-ended-up-dead-cincinnati/511736002).
 
 # Overview 📋
 BravoDispatch is a computer-aided dispatcher (CAD) application designed to help dispatch operators better handle calls. Bravo AI extracts critical details from a live caller transcript, and helps manage a set of active cases. It reduces manual data entry, takes some tension off of operators, and improves response times.
