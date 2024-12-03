@@ -1,3 +1,6 @@
+# Hack Western 11 Submission 🐎
+Winners: 🥇 First Place Overall, 🏆 Best AI Application Built with Cloudflare
+
 # Inspiration 💡
 April 12, 2018 in Cincinnati, Ohio, a failed dispatch mission lead to the death of 16 year-old Kyle Plush. His death was caused by an array of errors, both human and computer, and was completely tragic and preventable. More details on this case are found in the article here.
 
