@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Inspiration 💡
+April 12, 2018 in Cincinnati, Ohio, a failed dispatch mission lead to the death of 16 year-old Kyle Plush. His death was caused by an array of errors, both human and computer, and was completely tragic and preventable. More details on this case are found in the article here.
 
-## Getting Started
+# Overview 📋
+BravoDispatch is a computer-aided dispatcher (CAD) application designed to help dispatch operators better handle calls. Bravo AI extracts critical details from a live caller transcript, and helps manage a set of active cases. It reduces manual data entry, takes some tension off of operators, and improves response times.
 
-First, run the development server:
+![Splashpage](./images/splash_page.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![Home Page](./images/main_page.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Technical Information 🖥️
+BravoDispatch is built on a React framework, using Next.js for the front and backend, and Supabase as the data store. Extracting key information from transcript data is done by making a call to Cloudflare worker, which leverages the Llama 3 LLM.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+![Architecture](./images//architecture_diagram.png)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Future Outlook 🚀
+We made the most of our 36 hours, but looking to the future, this app would incorporate more features. For example, the live transcription module would include more languages and robustness. Then, we would want to use DeX, and also implement address verification. Furthermore, we would add recommended actions based on the category of the call. There could also be more fine-tuning for the AI, and overall maximally reduce any friction between the dispatcher and AI.
 
-## Learn More
+# Team composition 🤝
+At the time of writing, we are a team of final-year software engineering students from McMaster University. This is probably our last hackathon and it's been a journey and a blast, thanks to all the people at Hack Western that helped make it happen.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[Zayn Abed](https://github.com/abedmohammed)
+[Maged Armanios](https://github.com/marmanios)
+[Jinal Kasturiarachchi](https://github.com/jinalkast)
+[Jane Klavir](https://github.com/jane-klavir)
