@@ -10,7 +10,9 @@ BravoDispatch is a computer-aided dispatcher (CAD) application designed to help 
 ![Home Page](./images/main_page.png)
 
 # Demo Video 🎥
-View a 3-minute video demo of our application [here](https://github.com/user-attachments/assets/5e20149d-50c6-4001-8b78-0e01000cdf2a).
+
+https://github.com/user-attachments/assets/a07588c4-ea67-4c58-bb8f-2a9e4973129a
+
 
 # Technical Information 🖥️
 BravoDispatch is built on a React framework, using Next.js for the front and backend, and Supabase as the data store. Extracting key information from transcript data is done by making a call to Cloudflare worker, which leverages the Llama 3 LLM.
