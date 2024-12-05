@@ -39,70 +39,60 @@ export default function Dictaphone(): JSX.Element {
   // }, [data]);
 
   useEffect(() => {
-    // Start polling when speech recognition is active
     if (listening) {
-      // Record the start time when polling begins
       if (!startTime) setStartTime(Date.now());
-
-      // Clear any existing interval if present
+  
       if (intervalIdRef.current) {
         clearInterval(intervalIdRef.current);
       }
-
-      // Start polling every 1-2 seconds (random interval)
+  
       const id = setInterval(() => {
         if (transcript && startTime !== null) {
-          // Calculate elapsed time in seconds since polling started
           const elapsedTime = parseFloat(
             ((Date.now() - startTime) / 1000).toFixed(2)
           );
-
-          // Get the new additions to the transcript (what has changed since the last poll)
-          const newTranscriptPart = transcript.toLocaleLowerCase().replace(
-            previousTranscriptRef.current,
-            ""
-          );
-
-          if (newTranscriptPart) {
-            // Only add to the object if the new part is not empty
-            setNewStringObject((prev) => {
-              const updatedObject = [
-                ...prev,
-                { text: newTranscriptPart, timestamp: elapsedTime },
-              ];
-
-              // Update the previous transcript in the ref for the next comparison
-              previousTranscriptRef.current = transcript.toLocaleLowerCase();
-
-              return updatedObject;
-            });
-
+  
+          // Use a pointer to track where we left off
+          const previousTranscriptLength = previousTranscriptRef.current.length;
+          const newTranscript = transcript;
+          const newWords = newTranscript.slice(previousTranscriptLength).trim();
+  
+          if (newWords) {
+            // Add only the new words with a timestamp
+            setNewStringObject((prev) => [
+              ...prev,
+              { text: newWords, timestamp: elapsedTime },
+            ]);
+  
+            // Update the backend
             if (createdLog != null) {
               usePostTranscriptMutation.mutate({
                 logID: createdLog.id,
-                transcript: newStringObject,
+                transcript: [
+                  ...newStringObject,
+                  { text: newWords, timestamp: elapsedTime },
+                ],
               });
             }
-
-            lastTimestampRef.current = elapsedTime; // Update the last timestamp
+  
+            // Move the pointer forward
+            previousTranscriptRef.current = newTranscript;
           }
         }
-      }, Math.random() * 600 + 200); // Random interval between 0.6 and 0.8 seconds
-
-      intervalIdRef.current = id; // Store the interval ID in the ref
+      }, Math.random() * 600 + 200);
+  
+      intervalIdRef.current = id;
     } else if (intervalIdRef.current) {
-      // Stop polling if listening is turned off
       clearInterval(intervalIdRef.current);
-      intervalIdRef.current = null; // Clear the stored interval ID
+      intervalIdRef.current = null;
     }
-
-    // Cleanup the interval when the component is unmounted or listening is turned off
+  
     return () => {
       if (intervalIdRef.current) {
-        clearInterval(intervalIdRef.current); // Clear the interval when component unmounts
+        clearInterval(intervalIdRef.current);
       }
     };
-  }, [listening, transcript, startTime]); // Effect depends on listening state, transcript, and startTime
+  }, [listening, transcript, startTime]);  
 
   if (!browserSupportsSpeechRecognition) {
     return (
