@@ -34,10 +34,10 @@ export const fetchMetadata = async (
       ],
     });
 
-    console.log(completion.choices[0].message.content);
-    return JSON.parse(completion.choices[0].message.content);
+    const res = completion.choices[0].message.content ? JSON.parse(completion.choices[0].message.content) as TMetadata : null;
+    return res;
   } catch (error) {
-    return { error: error.message };
+    return null;
   }
 };
 
