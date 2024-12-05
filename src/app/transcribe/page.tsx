@@ -41,29 +41,29 @@ export default function Dictaphone(): JSX.Element {
   useEffect(() => {
     if (listening) {
       if (!startTime) setStartTime(Date.now());
-  
+
       if (intervalIdRef.current) {
         clearInterval(intervalIdRef.current);
       }
-  
+
       const id = setInterval(() => {
         if (transcript && startTime !== null) {
           const elapsedTime = parseFloat(
             ((Date.now() - startTime) / 1000).toFixed(2)
           );
-  
+
           // Use a pointer to track where we left off
           const previousTranscriptLength = previousTranscriptRef.current.length;
           const newTranscript = transcript;
           const newWords = newTranscript.slice(previousTranscriptLength).trim();
-  
+
           if (newWords) {
             // Add only the new words with a timestamp
             setNewStringObject((prev) => [
               ...prev,
               { text: newWords, timestamp: elapsedTime },
             ]);
-  
+
             // Update the backend
             if (createdLog != null) {
               usePostTranscriptMutation.mutate({
@@ -74,25 +74,25 @@ export default function Dictaphone(): JSX.Element {
                 ],
               });
             }
-  
+
             // Move the pointer forward
             previousTranscriptRef.current = newTranscript;
           }
         }
-      }, Math.random() * 600 + 200);
-  
+      }, Math.random() * 1200 + 600);
+
       intervalIdRef.current = id;
     } else if (intervalIdRef.current) {
       clearInterval(intervalIdRef.current);
       intervalIdRef.current = null;
     }
-  
+
     return () => {
       if (intervalIdRef.current) {
         clearInterval(intervalIdRef.current);
       }
     };
-  }, [listening, transcript, startTime]);  
+  }, [listening, transcript, startTime]);
 
   if (!browserSupportsSpeechRecognition) {
     return (

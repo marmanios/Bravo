@@ -141,6 +141,7 @@ export type TMetadata = {
   case_type: string;
   dispatch: string;
   situation_details: string;
+  error: string;
 };
 
 export type TMetadataRequestBody = {

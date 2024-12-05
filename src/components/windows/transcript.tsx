@@ -18,6 +18,8 @@ export default function Transcript({ loading }: props) {
     expandTranscript,
     setMetaData,
     setAiThinking,
+    editMode,
+    createMode,
   } = useCallLog();
   // const { data: transcript, isLoading } = useTranscript(TEMPTRANSCRIPTLINK);
   const {
@@ -61,7 +63,11 @@ export default function Transcript({ loading }: props) {
   }, [transcript, inCall]);
 
   useEffect(() => {
-    if (transcript?.length && transcript.length > lastUpdateLength + 3) {
+    if (
+      transcript?.length &&
+      transcript.length > lastUpdateLength + 3 &&
+      (editMode || createMode)
+    ) {
       const texts: string[] = transcript.map((cue) => cue.text);
       metadataMutation.mutate({ text: texts.join("\n") });
       setLastUpdateLength(transcript.length);
