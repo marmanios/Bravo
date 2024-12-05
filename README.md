@@ -7,9 +7,11 @@ April 12, 2018 in Cincinnati, Ohio, a failed dispatch mission lead to the death 
 # Overview 📋
 BravoDispatch is a computer-aided dispatcher (CAD) application designed to help dispatch operators better handle calls. Bravo AI extracts critical details from a live caller transcript, and helps manage a set of active cases. It reduces manual data entry, takes some tension off of operators, and improves response times.
 
-![Splashpage](./images/splash_page.png)
-
 ![Home Page](./images/main_page.png)
+
+# Demo Video 🎥
+View a 3-minute video demo of Bravo Dispatch here:
+![](./images/demo.mp4)
 
 # Technical Information 🖥️
 BravoDispatch is built on a React framework, using Next.js for the front and backend, and Supabase as the data store. Extracting key information from transcript data is done by making a call to Cloudflare worker, which leverages the Llama 3 LLM.
